@@ -1,0 +1,776 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>3.3. Shasta Reservoir: Standalone Simulation &#8212; Rapid Reservoir-River Temperature Assessment Model (R3TAM)</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/shasta_standalone';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3.4. Tutorial: Simulating Keswick Reservoir - an example fully-mixed tailbay reservoir type" href="keswick_standalone.html" />
+    <link rel="prev" title="3.1. Getting Started with the Rapid Reservoir-River Temperature Assessment Modeling (R3TAM) Framework" href="getting_started.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Rapid Reservoir-River Temperature Assessment Model (R3TAM) - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Rapid Reservoir-River Temperature Assessment Model (R3TAM) - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    The Rapid Reservoir-River Temperature Assessment Model (R3TAM)
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../discussion.html">1. Discussion: Motivation and Concepts</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference_.html">2. Reference: Motivation and Concepts</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/vertically_stratified_reservoir/restemp.html">2.1. ResTemp: A Simplified Model of Vertically-Stratifying Reservoirs</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../tutorials_.html">3. Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html">3.1. Getting Started with the Rapid Reservoir-River Temperature Assessment Modeling (R3TAM) Framework</a></li>
+
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.3. Shasta Reservoir: Standalone Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keswick_standalone.html">3.4. Tutorial: Simulating Keswick Reservoir - an example fully-mixed tailbay reservoir type</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/james-m-gilbert/r3tam" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/james-m-gilbert/r3tam/issues/new?title=Issue%20on%20page%20%2Ftutorials/shasta_standalone.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/tutorials/shasta_standalone.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Shasta Reservoir: Standalone Simulation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-brief-introduction-to-shasta-reservoir-temperature-simulation">3.3.1. A brief introduction to Shasta Reservoir Temperature Simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-inputs">3.3.2. Model Inputs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-specification-file">3.3.2.1. Run Specification File</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#general-information">General Information</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters">Parameters</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-properties">Simulation Properties</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#timing">Timing</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-condition">Initial condition</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-modes">Simulation modes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reservoir-specifications">3.3.2.2. Reservoir Specifications</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-parameters">3.3.2.3. Model Parameters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reservoir-inflows">3.3.2.4. Reservoir Inflows</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="shasta-reservoir-standalone-simulation">
+<h1><span class="section-number">3.3. </span>Shasta Reservoir: Standalone Simulation<a class="headerlink" href="#shasta-reservoir-standalone-simulation" title="Permalink to this heading">#</a></h1>
+<p>For this first tutorial, we will simulate water temperature in Shasta Reservoir as a single model component - that is, without interacting with any other downstream information or conditions.
+Later tutorials will cover a Keswick Reservoir component and methods for coupling these components together.</p>
+<section id="a-brief-introduction-to-shasta-reservoir-temperature-simulation">
+<h2><span class="section-number">3.3.1. </span>A brief introduction to Shasta Reservoir Temperature Simulation<a class="headerlink" href="#a-brief-introduction-to-shasta-reservoir-temperature-simulation" title="Permalink to this heading">#</a></h2>
+<p>There are many great resources for information on the history and technical details of water temperature management at Shasta Dam and Reservoir – and how it is commonly simulated in computer models – so I won’t go into much depth here.
+For now, the main point to consider is that the temperature of water stored in and released from Shasta Reservoir is affected by several key factors:</p>
+<ol class="arabic simple">
+<li><p>The temperature and volume of water flowing into the reservoir</p></li>
+<li><p>The mixing and stratification (distinctly warmer water separating from cooler water below) of water within the reservoir volume</p></li>
+<li><p>Heat exchange of water from the area around the reservoir (mainly the surface), and</p></li>
+<li><p>Selective withdrawal that releases water from different points in the water column to achieve a desired downstream release temperature.</p></li>
+</ol>
+<p>In real life we can see from records of temperature profiles in Shasta Reservoir that each of these factors can have different effects at different times of the year or when the reservoir is empty vs full.
+One key characteristic of Shasta Reservoir is that it statifies seasonally - meaning that a volume of water in the upper part of the vertical profile warms more than water at depth, creating a distinct boundary between two temperature zones.
+The water in this cooler, lower zone is often what is desired for coldwater temperature management for salmon during the hot summer months.</p>
+<p>In this version of R3TAM, we use a vertically discretized one-dimensional model we call <em>ResTemp</em> (for “Reservoir Temperature”) to represent those four factors and their interaction in a reservoir like Shasta.
+These factors are addressed by a set of calculations that occur at least once each time step - which for the Shasta <em>ResTemp</em> model is one day.
+At each time step, the model integrates information read in from user-provided input files, performs calculations, then updates the water temperature and water density conditions (we sometimes refer to these as the system “states”).
+The output from each time step is a record of those system states as well as other outcomes of interest - primarily the temperature of water released from Shasta Dam (e.g. via penstocks or river outlets) to the tailwater below.</p>
+<p>You can read more about the specifics of the process represenations in the reference sections or the Technical Memorandum document. &lt;&lt;&lt; add link &gt;&gt;&gt;
+The construction of the <em>ResTemp</em> code - including how the main factors mentioned above are translated to computational terms – determines the type and form of information and data that need to be provided by a modeler when performing simulations.
+We provide a description of these inputs in the sections below on our way toward running a standalone Shasta temperature simulation.</p>
+</section>
+<section id="model-inputs">
+<h2><span class="section-number">3.3.2. </span>Model Inputs<a class="headerlink" href="#model-inputs" title="Permalink to this heading">#</a></h2>
+<p>The following sections refer to files that support a Shasta Reservoir simulation using the ResTemp model.
+You can find these files in the <code class="docutils literal notranslate"><span class="pre">shasta</span></code> folder within the examples provided <a class="reference external" href="https://github.com/james-m-gilbert/r3tam/tree/test-release/examples">on GitHub</a> or in a zipped folder &lt;<provide-link>&gt;.</p>
+<section id="run-specification-file">
+<h3><span class="section-number">3.3.2.1. </span>Run Specification File<a class="headerlink" href="#run-specification-file" title="Permalink to this heading">#</a></h3>
+<p>A ResTemp simulation requires a range of different information and data, including:</p>
+<ul class="simple">
+<li><p>Reservoir volume, area, elevation relationships</p></li>
+<li><p>Vertical discretization</p></li>
+<li><p>Parameter values</p></li>
+<li><p>Input time series data</p></li>
+<li><p>Release options and characteristics</p></li>
+<li><p>Time period to simulate</p></li>
+</ul>
+<p>This information is provided as input to the model via a in <a class="reference external" href="https://yaml.org/about/">YAML</a> specification file.
+A screenshot of an example YAML specification file for a ResTemp Shasta Reservoir model is shown in <a class="reference internal" href="#fig-yamlspec-sha"><span class="std std-numref">Fig. 3.1</span></a>.
+The specification file is structured around <em>key-value</em> entries where the <em>key</em> is a text entry followed by a colon.
+The <em>value</em> entry follows the colon and can take the form of a single value (numeric, text, date, etc) or a path to a separate file that contains other types of information.</p>
+<p>The specification file <code class="docutils literal notranslate"><span class="pre">shasta_standalone.yaml</span></code> provided with the Shasta Reservoir example simulation has all the required information already set, but we provide a brief overview of the types and formats of information below.</p>
+<figure class="align-default" id="fig-yamlspec-sha">
+<img alt="../_images/restemp_shasta_specyaml_example.png" src="../_images/restemp_shasta_specyaml_example.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.1 </span><span class="caption-text">Screenshot of top portion of an example ResTemp model specification file in YAML format.</span><a class="headerlink" href="#fig-yamlspec-sha" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<section id="general-information">
+<h4>General Information<a class="headerlink" href="#general-information" title="Permalink to this heading">#</a></h4>
+<p>The first few entries in the specification file provide general information that applies to the entire simulation and model files.
+These are described in <a class="reference internal" href="#tbl-restemp-geninput"><span class="std std-numref">Table 3.1</span></a> below:</p>
+<table class="colwidths-auto table table-left" id="tbl-restemp-geninput">
+<caption><span class="caption-number">Table 3.1 </span><span class="caption-text">ResTemp Model Specification - General Inputs</span><a class="headerlink" href="#tbl-restemp-geninput" title="Permalink to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Entry</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>RunName</strong></p></td>
+<td><p>Name to be assigned to the model run - output files will use this name, so avoid spaces for better filesystem usability (<em>required</em>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Description</strong></p></td>
+<td><p>A longer description of the simulation, helpful to provide notes to yourself about important characteristics of a specific model run (<em>optional</em>)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>FacilityName</strong></p></td>
+<td><p>Name of the reservoir being simulated (<em>optional</em>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>SurfaceMethod</strong></p></td>
+<td><p>Sets the surface energy exchange method. Currently this should be set to <code class="docutils literal notranslate"><span class="pre">simple</span></code>, but a full energy balance option is being develped (<em>required - set to <code class="docutils literal notranslate"><span class="pre">simple</span></code></em>)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>SimulationUnits</strong></p></td>
+<td><p>Sets the unit system in which to simulate. Options are <code class="docutils literal notranslate"><span class="pre">afdegF</span></code> for acre-feet and degrees Fahrenheit and <code class="docutils literal notranslate"><span class="pre">m3degC</span></code> for cubic meters and degrees Celsius. For the early release version, the <code class="docutils literal notranslate"><span class="pre">afdegF</span></code> setting is recommended. (<em>required</em>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Location</strong></p></td>
+<td><p>Description, latitute, and longitude provide information about the reservoir. (<em>optional</em>)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h4>
+<p>The second section in the specification file sets the parameter values used by the <code class="docutils literal notranslate"><span class="pre">ResTemp</span></code> simulation components.
+The first five (C1-C5) are the primary parameters, and the remaining set of parameters are used to set different options for the simulation.</p>
+<p>The parameters and the calibrated values provided as part of the Shasta Reservoir example model are listed in <a class="reference internal" href="#tbl-restemp-params"><span class="std std-numref">Table 3.2</span></a>.</p>
+<table class="colwidths-auto table table-left" id="tbl-restemp-params">
+<caption><span class="caption-number">Table 3.2 </span><span class="caption-text">ResTemp Model Specification - Parameters - Values shown are unitless unless otherwise noted</span><a class="headerlink" href="#tbl-restemp-params" title="Permalink to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>C1</strong></p></td>
+<td><p>0.225</p></td>
+<td><p>Affects rate of air-water heat exchange at the water surface</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>C2</strong></p></td>
+<td><p>0.375</p></td>
+<td><p>Affects efficiency of heating from absorbed incoming shortwave solar radiation</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>C3</strong></p></td>
+<td><p>0.980</p></td>
+<td><p>Affects efficiency of latent heat exchange due to evaporation</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>C4</strong></p></td>
+<td><p>0.0525</p></td>
+<td><p>Affects rate of heat exchange from inflowing water</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>C5</strong></p></td>
+<td><p>0.004</p></td>
+<td><p>Affects rate of diffusive mixing among layers</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>DiffuseDist</strong></p></td>
+<td><p>15 (feet)</p></td>
+<td><p>Distance over which to calculate interlayer diffusion (units set in <code class="docutils literal notranslate"><span class="pre">DiffuseDistUnits</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>CriticalDepth</strong></p></td>
+<td><p>35 (feet)</p></td>
+<td><p>Depth from surface at which surface heat exchange goes to zero (units set in <code class="docutils literal notranslate"><span class="pre">CritcalDepthUnits</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>MeanAlbedo</strong></p></td>
+<td><p>0.08</p></td>
+<td><p>Controls the balance of reflection andabsorption of solar radiation at the water surface</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>AlbedoAmplitude</strong></p></td>
+<td><p>0.025</p></td>
+<td><p>Controls seasonal variability of albedo; if 0, then <code class="docutils literal notranslate"><span class="pre">MeanAlbedo</span></code> applies uniformly for each time step</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>ExtinctionCoeff</strong></p></td>
+<td><p>0.45</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>SeasSolRad</strong></p></td>
+<td><p>1.0</p></td>
+<td><p>An option for modifying solar radiation to account for seasonality; value of 1 means no modification</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>WindMethod</strong></p></td>
+<td><p>‘w2’</p></td>
+<td><p>Set method by which wind speed is converted to information needed for wind-driven mixing and evaporation; ‘w2’ uses the same method as in CE-QUAL-W2</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>WindAlpha</strong></p></td>
+<td><p>9.45</p></td>
+<td><p>Parameter needed for the ‘w2’ <code class="docutils literal notranslate"><span class="pre">WindMethod</span></code> option</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>WindBeta</strong></p></td>
+<td><p>0.46</p></td>
+<td><p>Parameter needed for the ‘w2’ <code class="docutils literal notranslate"><span class="pre">WindMethod</span></code> option</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>WindGamma</strong></p></td>
+<td><p>2.05</p></td>
+<td><p>Parameter needed for the ‘w2’ <code class="docutils literal notranslate"><span class="pre">WindMethod</span></code> option</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>WindHeight_m</strong></p></td>
+<td><p>10.0</p></td>
+<td><p>The height at which input wind speed is measured (assumed in units of meters). This is needed for potential adjustment to 2-m height assumed for wind mixing and evaporation calculations</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="simulation-properties">
+<h4>Simulation Properties<a class="headerlink" href="#simulation-properties" title="Permalink to this heading">#</a></h4>
+<p>The specification file also includes entries to set required configuration information like timing, initial conditions, and simulation mode options.
+A screenshot of these entries from the example Shasta specification file is shown in <a class="reference internal" href="#fig-timingmode-sha"><span class="std std-numref">Fig. 3.2</span></a> and explained in more detail below.</p>
+<figure class="align-default" id="fig-timingmode-sha">
+<img alt="../_images/restemp_shasta_timingmodeinit_example.png" src="../_images/restemp_shasta_timingmodeinit_example.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.2 </span><span class="caption-text">Screenshot of top portion of an example ResTemp model specification file in YAML format.</span><a class="headerlink" href="#fig-timingmode-sha" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<section id="timing">
+<h5>Timing<a class="headerlink" href="#timing" title="Permalink to this heading">#</a></h5>
+<p>The <code class="docutils literal notranslate"><span class="pre">*Timing*</span></code> entry includes two sub-entries <code class="docutils literal notranslate"><span class="pre">StartDate</span></code> and <code class="docutils literal notranslate"><span class="pre">EndDate</span></code>.
+The input for each should follow a <em>“month/day/year”</em> format.
+As an example, to start the simulation on January 1, 2000, one would enter ‘1/1/2000’ as the value to the <code class="docutils literal notranslate"><span class="pre">StartDate</span></code> key.</p>
+<div class="dropdown admonition">
+<p class="admonition-title">Some notes on simulation timing</p>
+<p>Check to make sure that the <code class="docutils literal notranslate"><span class="pre">EndDate</span></code> entry is later than the <code class="docutils literal notranslate"><span class="pre">StartDate</span></code>.
+The simulation will not run if this is not the case.</p>
+<p>Another thing to keep in mind is that the simulation timing tells the <em><strong>ResTemp</strong></em> model what time series data to look for as it advances through each timestep. Make sure that input time series provide data for the time range set by the timing.</p>
+<p>The ResTemp model assumes a daily time step. The <code class="docutils literal notranslate"><span class="pre">TimeStepDays</span></code> key that is included in example specification files should be set to 1.0 for now. The option for sub-daily time steps is currently under consideration for future development as it requires some substantial changes to the model functions.</p>
+</div>
+</section>
+<section id="initial-condition">
+<h5>Initial condition<a class="headerlink" href="#initial-condition" title="Permalink to this heading">#</a></h5>
+<p>The <em>Intial Condition</em> entry is used to provide input to the model regarding how to intialize the reservoir states (storage volume and temperature).
+Current functionality is limited to reading in and assigning these states from observational data - this is is set by assigning the <code class="docutils literal notranslate"><span class="pre">Method</span></code> sub-entry as <em>‘from_obs’</em>.
+See the &lt;&lt;&lt;&lt; observation data section &gt;&gt;&gt;&gt; for more information about the observation data options and requirements.</p>
+<div class="dropdown admonition">
+<p class="admonition-title">Some notes on simulation timing</p>
+<p>The simulation start date set via <code class="docutils literal notranslate"><span class="pre">Timing</span> <span class="pre">&gt;</span> <span class="pre">StartDate</span></code> should correspond closely with a date of available observation data - that is, reservoir storage and temperature profiles. In the common case where the desired simulation start date and the available profile data do not exactly align, the model will automatically find the closest date to the set start date and assign the profile data accordingly. This is important to keep in mind when evaluating simulated temperature profiles around these initialization dates.</p>
+</div>
+</section>
+<section id="simulation-modes">
+<h5>Simulation modes<a class="headerlink" href="#simulation-modes" title="Permalink to this heading">#</a></h5>
+</section>
+</section>
+</section>
+<section id="reservoir-specifications">
+<h3><span class="section-number">3.3.2.2. </span>Reservoir Specifications<a class="headerlink" href="#reservoir-specifications" title="Permalink to this heading">#</a></h3>
+<p>The <em>ResTemp</em> formulation treats a reservoir as a single volume of water that can vary vertically  but is assumed to be uniform laterally.
+To distinguish this vertical variation in temperature the reservoir volume is assigned a certain number of layers by the modeler.
+The number and thickness (they don’t all have to be the same size) of the layers determines how finely or coarsely the resulting temperature simulation will be, and it can affect the accuracy of the simulation.</p>
+<p>The text file that specifies these layers for the Shasta example model can be found within the <code class="docutils literal notranslate"><span class="pre">inputs</span></code> folder and is titled <code class="docutils literal notranslate"><span class="pre">layers42.txt</span></code>.
+The file contains a simple listing of index and elevation values (in units of feet) ordered sequentially from low to high.
+Each elevation value sets the bounds of a layer - there are 43 values listed to define the top and bottom elevation of 42 layers.
+Note that the layer definitions encompass the elevation range of a full Shasta reservoir - that is, up to 1067 feet above mean sea level.
+This sets the maximum elevation of the reservoir, but the actual volume at any given time step will depend on the mass balance of flows in an out of the reservoir.</p>
+<p>The ResTemp model tracks water volume, temperature, and heat exchange at each layer.
+This requires that the volume and area of each layer be defined.
+This is done through two more look-up tables provided in the <code class="docutils literal notranslate"><span class="pre">inputs</span></code> folder:</p>
+<ul class="simple">
+<li><p><strong>ShastaElevationAreaTable.txt</strong>: Relates the surface area of each layer top/bottom to the elevation</p></li>
+<li><p><strong>ShastaElevationCapacityTable.txt</strong>: Sets the total volume of the reservoir when water is filled to that elevation</p></li>
+</ul>
+<p>The ResTemp code reads in these three files (layer specification: <code class="docutils literal notranslate"><span class="pre">layers42.txt</span></code>, elevation-area: <code class="docutils literal notranslate"><span class="pre">ShastaElevationAreaTable.txt</span></code>, &amp; elevation-volume: <code class="docutils literal notranslate"><span class="pre">ShastaElevationCapacityTable.txt</span></code> ) as part of the model initialization and automatically assigns incremental volumes and elevations to each layer that comprises the model.</p>
+</section>
+<section id="model-parameters">
+<h3><span class="section-number">3.3.2.3. </span>Model Parameters<a class="headerlink" href="#model-parameters" title="Permalink to this heading">#</a></h3>
+<p>The ResTemp model uses five main parameters and up to another 10 additional parameters, depending on simulation options, to specify heat exchange and mixing processes.
+These are the parameters that can be adjusted via a calibration process to better fit simulated temperature profiles, fluxes, and release temperatures to observed data.</p>
+</section>
+<section id="reservoir-inflows">
+<h3><span class="section-number">3.3.2.4. </span>Reservoir Inflows<a class="headerlink" href="#reservoir-inflows" title="Permalink to this heading">#</a></h3>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./tutorials"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="getting_started.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">3.1. </span>Getting Started with the Rapid Reservoir-River Temperature Assessment Modeling (R3TAM) Framework</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="keswick_standalone.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3.4. </span>Tutorial: Simulating Keswick Reservoir - an example fully-mixed tailbay reservoir type</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-brief-introduction-to-shasta-reservoir-temperature-simulation">3.3.1. A brief introduction to Shasta Reservoir Temperature Simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-inputs">3.3.2. Model Inputs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-specification-file">3.3.2.1. Run Specification File</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#general-information">General Information</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters">Parameters</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-properties">Simulation Properties</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#timing">Timing</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-condition">Initial condition</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-modes">Simulation modes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reservoir-specifications">3.3.2.2. Reservoir Specifications</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-parameters">3.3.2.3. Model Parameters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reservoir-inflows">3.3.2.4. Reservoir Inflows</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By James Gilbert, UC Santa Cruz
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

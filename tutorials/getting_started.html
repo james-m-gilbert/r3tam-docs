@@ -1,0 +1,587 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>3.1. Getting Started with the Rapid Reservoir-River Temperature Assessment Modeling (R3TAM) Framework &#8212; Rapid Reservoir-River Temperature Assessment Model (R3TAM)</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/getting_started';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3.3. Shasta Reservoir: Standalone Simulation" href="shasta_standalone.html" />
+    <link rel="prev" title="3. Tutorials" href="../tutorials_.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Rapid Reservoir-River Temperature Assessment Model (R3TAM) - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Rapid Reservoir-River Temperature Assessment Model (R3TAM) - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    The Rapid Reservoir-River Temperature Assessment Model (R3TAM)
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../discussion.html">1. Discussion: Motivation and Concepts</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference_.html">2. Reference: Motivation and Concepts</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/vertically_stratified_reservoir/restemp.html">2.1. ResTemp: A Simplified Model of Vertically-Stratifying Reservoirs</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../tutorials_.html">3. Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.1. Getting Started with the Rapid Reservoir-River Temperature Assessment Modeling (R3TAM) Framework</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="shasta_standalone.html">3.3. Shasta Reservoir: Standalone Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keswick_standalone.html">3.4. Tutorial: Simulating Keswick Reservoir - an example fully-mixed tailbay reservoir type</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/james-m-gilbert/r3tam" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/james-m-gilbert/r3tam/issues/new?title=Issue%20on%20page%20%2Ftutorials/getting_started.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/tutorials/getting_started.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Getting Started with the Rapid Reservoir-River Temperature Assessment Modeling (R3TAM) Framework</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">3.1. Getting Started with the Rapid Reservoir-River Temperature Assessment Modeling (R3TAM) Framework</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisite-knowledge-and-skills">3.1.1. Prerequisite Knowledge and Skills</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-a-python-environement">3.1.2. Setting up a Python Environement</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-the-r3tam-python-package">3.2. Installing the R3TAM Python package</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="getting-started-with-the-rapid-reservoir-river-temperature-assessment-modeling-r3tam-framework">
+<h1><span class="section-number">3.1. </span>Getting Started with the Rapid Reservoir-River Temperature Assessment Modeling (R3TAM) Framework<a class="headerlink" href="#getting-started-with-the-rapid-reservoir-river-temperature-assessment-modeling-r3tam-framework" title="Permalink to this heading">#</a></h1>
+<section id="prerequisite-knowledge-and-skills">
+<h2><span class="section-number">3.1.1. </span>Prerequisite Knowledge and Skills<a class="headerlink" href="#prerequisite-knowledge-and-skills" title="Permalink to this heading">#</a></h2>
+<p>The R3TAM framework is written entirely in Python and will require a local (installed on your computer) instance of a Python interpreter to run.
+This tutorial will not cover how to install Python, but there are lots of good resources on the internet that can help you do that.
+I normally use the <a class="reference external" href="https://www.anaconda.com/download">Anaconda distribution</a> for fairly straightforward Python environment installation.</p>
+<p>Although it is not strictly required, it may be helpful to have the <code class="docutils literal notranslate"><span class="pre">git</span></code> version control software installed on your computer.
+If you make changes to the code and want to keep track of them (or want to review the revision history of the existing code base), an understanding of basic version control concepts and how to use <code class="docutils literal notranslate"><span class="pre">git</span></code> commands will be needed.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p class="rubric">Python Versions</p>
+<p>The R3TAM models were built and tested using Python 3.10.11.
+The code should be compatible with newer versions, but if you want to avoid potential frustrations, I’d suggest sticking with a 3.10.x version.</p>
+<p>If you have multiple Python versions on your computer and you’d like to make managing and tracking versions and packages easier, setting up a virtual environment with your base Python version of choice is recommended.</p>
+</div>
+<p>There is no graphical user interface (GUI) to accompany the models, so all interactions with the model are through code, configuration, and data files.
+The tutorials, for the most part, assume that the use has some experience and comfort with common tasks like navigating via a command prompt and editing/running code in an interpreter.</p>
+</section>
+<section id="setting-up-a-python-environement">
+<h2><span class="section-number">3.1.2. </span>Setting up a Python Environement<a class="headerlink" href="#setting-up-a-python-environement" title="Permalink to this heading">#</a></h2>
+<p>If you work with Python frequently and have a mixed set of versions and environments, it’s cleaner (and can save you some future frustrations) to create a “virtual environment” specifically for the task at hand.
+In this case, that would mean creating an virtual environment for the R3TAM modeling of Shasta, Keswick, and the Sacramento River.</p>
+<p>There are good online resources that can give you an introduction to Python virtual environments (e.g. <a class="reference external" href="https://docs.python.org/3.10/library/venv.html">Creation of Virtual Environments - Python 3.10</a>). Check these out if you want to learn more.</p>
+<p>As an example, here are steps I used to create a virtual environment for running R3TAM simulations (all from within a command prompt/command line/console window):</p>
+<ol class="arabic simple">
+<li><p>Activate Python 3.10.11 using the Conda package manager (<code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">~conda-env-name~</span></code>, where <em>~conda-env-name~</em> is the name of your base Conda environment, <code class="docutils literal notranslate"><span class="pre">py310</span></code>, for example)</p></li>
+<li><p>Navigate to the folder on your computer where you’d like to create the virtual environment, then enter command <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">venv</span> <span class="pre">R3TAMenv</span></code> (where <em>R3TAMenv</em> is the name I assigned to the new virtual environment - feel free to change to something different if you prefer)</p></li>
+<li><p>Once the new environment is created, you should be able to activate it (assuming Windows) using something like Scripts\activate.bat</p></li>
+<li><p>You should see an indicator in your command window indicating the new environment is active. If not, try de-activating the <code class="docutils literal notranslate"><span class="pre">conda</span></code> environment (<code class="docutils literal notranslate"><span class="pre">deactivate</span> <span class="pre">~conda-env-name~</span></code>) - it may be overriding the new virtual environment.</p></li>
+</ol>
+<p>An example of what these steps look like in a command prompt window is shown below:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">conda activate py310</span>
+
+<span class="go">cd Modeling\WaterTemperature\</span>
+
+<span class="go">python -m venv R3TAMenv</span>
+</pre></div>
+</div>
+<p>Note that the second command will create the virtual environment in a folder called <code class="docutils literal notranslate"><span class="pre">R3TAMenv</span></code> in the current working directory of the command console.
+If you want to put the environment in a specific location (say, in a folder where you will keep all your temperature model runs), you can either navigate to that directory or include the full path specifying the intended location of <code class="docutils literal notranslate"><span class="pre">R3TAMenv</span></code>.</p>
+<p>Once you have the virtual environment created, you can activate it so that any Python commands you enter (or scripts you run), will reference this new Python environemnt.
+The activation commands vary based on your platform:</p>
+<ul class="simple">
+<li><p>Windows: (cmd.exe) <code class="docutils literal notranslate"><span class="pre">C:</span> <span class="pre">&lt;venv&gt;\Scripts\activate.bat</span></code></p></li>
+<li><p>Linux/macOS: (bash): <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">&lt;venv&gt;/Scripts/activate</span></code></p></li>
+</ul>
+<p>One final step - I recommend setting up a IPython/Jupyter kernel so you can interact with the R3TAM code in an IDE environment. To do that, you’ll need to install additional libraries. I tend to use the Spyder IDE most frequently, so the command to install necessary components is: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">spyder-kernels==3.0.*</span></code></p>
+<p>Once you’ve successfully activated your R3TAM virtual environment and isntalled the <code class="docutils literal notranslate"><span class="pre">spyder-kernels</span></code>, you are ready for installation!</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="installing-the-r3tam-python-package">
+<h1><span class="section-number">3.2. </span>Installing the R3TAM Python package<a class="headerlink" href="#installing-the-r3tam-python-package" title="Permalink to this heading">#</a></h1>
+<p>The R3TAM simulation framework is currently distributed via <a class="reference external" href="https://github.com/james-m-gilbert/r3tam">GitHub</a> and can be installed using the <code class="docutils literal notranslate"><span class="pre">pip</span></code> command that should be part of your Python installation and/or environment.</p>
+<p>You can install the code into your selected local environment using the following command:</p>
+<div class="highlight-console notranslate" id="github-install-r3tam"><div class="highlight"><pre><span></span><span class="go">pip install git+https://github.com/james-m-gilbert/r3tam@test-release</span>
+</pre></div>
+</div>
+<p>The first part of the command (<code class="docutils literal notranslate"><span class="pre">pip</span></code>) calls the Python package manager and, as long as your R3TAM environment is active, the <code class="docutils literal notranslate"><span class="pre">pip</span></code> commands will apply just to that environment.
+The <code class="docutils literal notranslate"><span class="pre">install</span></code> command indicates a package is to be installed.
+The third part of the command specifies that we’re installing from a GitHub repository. In this case we’re installing a specific branch or version - the “test-release” branch, as indicated by that name following the <em>&#64;</em> after <code class="docutils literal notranslate"><span class="pre">r3tam</span></code>.</p>
+<p>On running this command in the command line, you should see a bunch of test scroll by - downloading, installing, and hopefully a “Successfully built r3tam” followed by “Successfully installed …” a listing of the dependencies on which the R3TAM code relies.
+If you don’t see any error messages, the package should be installed and ready to test out.
+See the tutorials for Shasta Reservoir, Keswick Reservoir, Sacramento River, and coupled simulation to learn how to run the different model components.</p>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./tutorials"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../tutorials_.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>Tutorials</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="shasta_standalone.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3.3. </span>Shasta Reservoir: Standalone Simulation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">3.1. Getting Started with the Rapid Reservoir-River Temperature Assessment Modeling (R3TAM) Framework</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisite-knowledge-and-skills">3.1.1. Prerequisite Knowledge and Skills</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-a-python-environement">3.1.2. Setting up a Python Environement</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-the-r3tam-python-package">3.2. Installing the R3TAM Python package</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By James Gilbert, UC Santa Cruz
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
