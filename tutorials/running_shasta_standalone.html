@@ -1,0 +1,700 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>3.4. Shasta Reservoir: Standalone Simulation - Part Two &#8212; Rapid Reservoir-River Temperature Assessment Model (R3TAM)</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/running_shasta_standalone';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3.5. Tutorial: Simulating Keswick Reservoir - an example fully-mixed tailbay reservoir type" href="keswick_standalone.html" />
+    <link rel="prev" title="3.3. Shasta Reservoir: Standalone Simulation - Part One" href="shasta_standalone.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo_v01.png" class="logo__image only-light" alt="Rapid Reservoir-River Temperature Assessment Model (R3TAM) - Home"/>
+    <script>document.write(`<img src="../_static/logo_v01.png" class="logo__image only-dark" alt="Rapid Reservoir-River Temperature Assessment Model (R3TAM) - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    The Rapid Reservoir-River Temperature Assessment Model (R3TAM)
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../discussion.html">1. Discussion: Motivation and Concepts</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference_.html">2. Reference: Description of model components</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/vertically_stratified_reservoir/restemp.html">2.1. ResTemp: A Simplified Model of Vertically-Stratifying Reservoirs</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../tutorials_.html">3. Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html">3.1. Getting Started with the Rapid Reservoir-River Temperature Assessment Modeling (R3TAM) Framework</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="shasta_standalone.html">3.3. Shasta Reservoir: Standalone Simulation - Part One</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.4. Shasta Reservoir: Standalone Simulation - Part Two</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keswick_standalone.html">3.5. Tutorial: Simulating Keswick Reservoir - an example fully-mixed tailbay reservoir type</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/james-m-gilbert/r3tam" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/james-m-gilbert/r3tam/issues/new?title=Issue%20on%20page%20%2Ftutorials/running_shasta_standalone.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/tutorials/running_shasta_standalone.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Shasta Reservoir: Standalone Simulation - Part Two</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-a-simulation">3.4.1. Setting up a simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-restemp-simulation-for-shasta-reservoir">3.4.2. Running a <em>ResTemp</em> Simulation for Shasta Reservoir</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#package-imports">3.4.2.1. Package imports</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initialization">3.4.2.2. Initialization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-the-model">3.4.2.3. Run the model</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="shasta-reservoir-standalone-simulation-part-two">
+<h1><span class="section-number">3.4. </span>Shasta Reservoir: Standalone Simulation - Part Two<a class="headerlink" href="#shasta-reservoir-standalone-simulation-part-two" title="Permalink to this heading">#</a></h1>
+<p>If you finished the <a class="reference internal" href="shasta_standalone.html"><span class="doc std std-doc">first tutorial on the Shasta ResTemp model</span></a>, you now have some familiarity with the types of information required as input and some of the options available for running.
+In this part of the tutorial we’ll go through the simpler process of using that information and options to actually run some simulations.</p>
+<section id="setting-up-a-simulation">
+<h2><span class="section-number">3.4.1. </span>Setting up a simulation<a class="headerlink" href="#setting-up-a-simulation" title="Permalink to this heading">#</a></h2>
+<p>The yaml specification file we covered in the first part of this tutorial contains all the input information, but to make a simulation we need to connect that information to the <em><strong>R3TAM</strong></em> code that does the calculations and advances through our prescribed simulation period.
+We do this through a relatively Python script. In fact, the rest of this tutorial will be describing the contents of just such a Python file that can be used to run a Shasta model.</p>
+<p>To make things easier, I’ve provided the files needed to run the example simulations in a zipped folder here.
+If you haven’t already done so, download these files and place them in a directory where you’ll want to do your test runs.
+Once you’ve done that, navigate to the <em>shasta</em> folder (<code class="docutils literal notranslate"><span class="pre">examples/shasta</span></code>) and note the arrangement of files and folders.
+You should see a folder named <code class="docutils literal notranslate"><span class="pre">inputs</span></code>, one named <code class="docutils literal notranslate"><span class="pre">obs</span></code>, the YAML run specification file <code class="docutils literal notranslate"><span class="pre">shasta_standalone.yaml</span></code>, and several Python (<em>*.py</em>) files.</p>
+<p>You may recognize the <code class="docutils literal notranslate"><span class="pre">inputs</span></code> folder as the location of several input files (layers, area-elevation-volume curves, time series inputs) that are set in the specification file.
+Similarly the <code class="docutils literal notranslate"><span class="pre">obs</span></code> folder contains the observation files for temperature profiles and release temperatures.</p>
+<p>Once you’ve gotten an overview of the main shasta run folder, open the <code class="docutils literal notranslate"><span class="pre">shasta_stanadlone_example01.py</span></code> file in Spyder, VSCode, or your Python IDE of choice. We’ll go over the parts of this script and how they’re used to run the Shasta example simulation.
+For each part you should be able to run the relevant code in your Python interpreter/IDE - remember to switch to the new virtual environment to which you installed the <em><strong>R3TAM</strong></em> package if you haven’t already done so.</p>
+</section>
+<section id="running-a-restemp-simulation-for-shasta-reservoir">
+<h2><span class="section-number">3.4.2. </span>Running a <em>ResTemp</em> Simulation for Shasta Reservoir<a class="headerlink" href="#running-a-restemp-simulation-for-shasta-reservoir" title="Permalink to this heading">#</a></h2>
+<p>Python scripts for running <em>ResTemp</em> or <em><strong>R3TAM</strong></em> models can become rather complicated (e.g. for coupled multi-model simulations or ensemble forecasting), but for a basic standalone simulation they are straightforward.
+The scripts generally include four important components:</p>
+<ol class="arabic simple">
+<li><p>Package/module imports</p></li>
+<li><p>Initialization</p></li>
+<li><p>Advancing through the simulation</p></li>
+<li><p>Finalizing and reviewing results</p></li>
+</ol>
+<p>The following sections review how the contents of <code class="docutils literal notranslate"><span class="pre">shasta_stanadlone_example01.py</span></code> address each of these.</p>
+<section id="package-imports">
+<h3><span class="section-number">3.4.2.1. </span>Package imports<a class="headerlink" href="#package-imports" title="Permalink to this heading">#</a></h3>
+<p>At the top of the Python file <code class="docutils literal notranslate"><span class="pre">shasta_stanadlone_example01.py</span></code> you’ll see some notes describing the purpose of this script and a number of import statements.
+The first set of imports - for <code class="docutils literal notranslate"><span class="pre">pandas</span></code> and <code class="docutils literal notranslate"><span class="pre">numpy</span></code>, shown in the snipped below - are not strictly necessary for running the model, but they are commonly used and can be helpful if you want to explore datasets produced by the simulation.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import some standard libraries</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+</pre></div>
+</div>
+<p>Below that are several lines that import the <em><strong>R3TAM</strong></em> modules needed for the simulation.
+Because this is a standalone (i.e. no other models are coupled) simulation, the only part of <em><strong>R3TAM</strong></em> we need is the <em>ResTemp</em> module.
+This line is active while the other imports are commented out. Importing the other modules would not cause a problem, but for the sake of this example we leave them commented out.
+Note on line 28 that we do import a module called <code class="docutils literal notranslate"><span class="pre">make_plots</span></code> - this is a set of plotting functions that works directly with the results of a <em>ResTemp</em> simulation.
+These plots can be convenient for reviewing model results after a simulation. We’ll discuss that further below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import the R3TAM libraries - since this is just a Shasta reservoir </span>
+<span class="c1"># simulation, we really only need the ResTemp module</span>
+<span class="kn">from</span> <span class="nn">r3tam</span> <span class="kn">import</span> <span class="n">restemp</span> <span class="k">as</span> <span class="n">rt</span>
+<span class="c1">#from r3tam import longtemp as lt</span>
+<span class="c1">#from r3tam.river import River</span>
+<span class="c1">#from r3tam import coupling</span>
+
+<span class="c1"># the `make_plots` library has helpful plots for viewing results</span>
+<span class="kn">from</span> <span class="nn">r3tam</span> <span class="kn">import</span> <span class="n">make_plots</span> <span class="k">as</span> <span class="n">mkp</span>
+
+</pre></div>
+</div>
+<p>Note that we import <code class="docutils literal notranslate"><span class="pre">restemp</span></code> and rename it as <code class="docutils literal notranslate"><span class="pre">rt</span></code>. This is mainly for brevity - you could import it without renaming if you prefer.
+Many of the key simulation functions for the <em>ResTemp</em> model can be accessed through this <code class="docutils literal notranslate"><span class="pre">rt</span></code> object.</p>
+<p>The final import for the <code class="docutils literal notranslate"><span class="pre">time</span></code> package is simply for measuring how long the simulations take.
+<em><strong>R3TAM</strong></em> is supposed to be <em>rapid</em> - might as well check to know for sure.</p>
+<p>Run this import section in your Python interpreter according to the methods of your IDE.
+In IDEs that recognize the <code class="docutils literal notranslate"><span class="pre">#%%</span></code> cell demarcation, you should be able to simply run each cell (e.g with <code class="docutils literal notranslate"><span class="pre">Ctrl+Enter</span></code>).
+Running the import section should produce no errors or console messages.</p>
+</section>
+<section id="initialization">
+<h3><span class="section-number">3.4.2.2. </span>Initialization<a class="headerlink" href="#initialization" title="Permalink to this heading">#</a></h3>
+<p>In the initialization step, all of the information in the YAML specification file is read in and used to set up the model object and the parameters of the simulation.
+The key thing we need is the location of the specification file.
+We set this path to the variable <code class="docutils literal notranslate"><span class="pre">config_fp</span></code> as shown in the example on line 37.
+You’ll want to change the file path here to match the location of the YAML specification file on your own computer.</p>
+<p>We can now use that <code class="docutils literal notranslate"><span class="pre">config_fp</span></code> variable as an argument to the <code class="docutils literal notranslate"><span class="pre">initialize_model</span></code> function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="n">config_fp</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;D:\02_Projects\SacTemp\SimTemp\R3TAM\examples\shasta\shasta_standalone.yaml&#39;</span>
+
+<span class="n">shasta</span> <span class="o">=</span> <span class="n">rt</span><span class="o">.</span><span class="n">Res</span><span class="o">.</span><span class="n">initialize_model</span><span class="p">(</span><span class="n">config_fp</span><span class="p">,</span> <span class="n">profile_temp_units</span><span class="o">=</span><span class="s1">&#39;degF&#39;</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">rt</span></code> (<em>ResTemp</em> module) contains a number of objects and functions. The one we access here, <code class="docutils literal notranslate"><span class="pre">Res</span></code>, is for a reservoir.
+We can access the <code class="docutils literal notranslate"><span class="pre">initialize_model</span></code> from this reservoir object.
+This initialization function takes one required argument - the path to a YAML specification file - and has several optional keyword arguments.
+One of these keyword arguments is <code class="docutils literal notranslate"><span class="pre">profile_temp_units</span></code> - we set this to <code class="docutils literal notranslate"><span class="pre">degF</span></code> as the temperature profile data provided in the input files are in degrees Fahrenheit.</p>
+<p>Run the two commands (or the cell). You should see some information printed to the console screen - consistent with the listing shown below.
+This readout should confirm much of the information provided as input and can be helpful in debugging or tracing unexpected results.</p>
+<p>The first part confirms the location of files and the model directory - if this isn’t where you intend to run the model, now you can correct it.
+The second part confirms the units for calculations followed by a listing of penstock configurations.
+The final portion of the listing displays the assigned initial temperature profile, going from lowest layers to higher until the initial volume is reached.
+Depending on the initialization volume, some layers will show <code class="docutils literal notranslate"><span class="pre">nan</span></code> for <code class="docutils literal notranslate"><span class="pre">Temp</span></code> and <code class="docutils literal notranslate"><span class="pre">TotE</span></code> as these layers are empty - this is as expected and is not an error.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="n">Loading</span> <span class="n">configuration</span> <span class="n">file</span><span class="p">:</span> <span class="n">D</span><span class="p">:</span>\<span class="mi">02</span><span class="n">_Projects</span>\<span class="n">SacTemp</span>\<span class="n">SimTemp</span>\<span class="n">R3TAM</span>\<span class="n">examples</span>\<span class="n">shasta</span>\<span class="n">shasta_standalone</span><span class="o">.</span><span class="n">yaml</span>
+<span class="n">working</span> <span class="n">directory</span> <span class="nb">set</span> <span class="k">as</span><span class="p">:</span> <span class="n">D</span><span class="p">:</span>\<span class="mi">02</span><span class="n">_Projects</span>\<span class="n">SacTemp</span>\<span class="n">SimTemp</span>\<span class="n">R3TAM</span>\<span class="n">examples</span>\<span class="n">shasta</span>
+<span class="n">Assigning</span> <span class="n">Debug</span> <span class="n">levels</span>
+
+<span class="o">-------------------------------------------</span>
+<span class="n">Model</span> <span class="n">calculations</span> <span class="n">will</span> <span class="n">be</span> <span class="n">done</span> <span class="ow">in</span> <span class="n">units</span> <span class="n">of</span><span class="p">:</span>
+	<span class="n">ACRE</span><span class="o">-</span><span class="n">FEET</span><span class="p">,</span> <span class="n">ACRES</span><span class="p">,</span> <span class="ow">and</span> <span class="n">DEG</span> <span class="n">F</span>
+<span class="o">-------------------------------------------</span>
+<span class="n">Unknown</span> <span class="n">units</span> <span class="k">for</span> <span class="n">river</span> <span class="n">outlet</span> <span class="n">capacity</span> <span class="o">-</span> <span class="n">assuming</span> <span class="n">CFS</span>
+<span class="n">Unknown</span> <span class="n">units</span> <span class="k">for</span> <span class="n">river</span> <span class="n">outlet</span> <span class="n">capacity</span> <span class="o">-</span> <span class="n">assuming</span> <span class="n">CFS</span>
+<span class="n">Unknown</span> <span class="n">units</span> <span class="k">for</span> <span class="n">river</span> <span class="n">outlet</span> <span class="n">capacity</span> <span class="o">-</span> <span class="n">assuming</span> <span class="n">CFS</span>
+
+
+<span class="o">-----------------------------------------------</span>
+   <span class="n">Reading</span> <span class="ow">in</span> <span class="n">PENSTOCK</span> <span class="n">configuration</span>       
+		<span class="n">Variable</span><span class="p">:</span>   <span class="n">PenstockElevation</span>
+		<span class="n">Variable</span><span class="p">:</span>   <span class="n">PenstockElevUnits</span>
+		<span class="n">Variable</span><span class="p">:</span>   <span class="n">PenstockReleaseLimit</span>
+			<span class="n">Setting</span> <span class="n">penstock</span> <span class="n">release</span> <span class="n">limit</span> <span class="n">to</span> <span class="mf">18750.0</span>
+		<span class="n">Variable</span><span class="p">:</span>   <span class="n">PenstockReleaseLimit_Units</span>
+<span class="o">------------------</span><span class="n">DONE</span><span class="o">---------------------------</span>
+
+<span class="n">assigning</span> <span class="n">outflow</span> <span class="n">data</span>
+
+<span class="o">*</span><span class="n">Adjusting</span> <span class="n">windspeed</span> <span class="n">to</span> <span class="n">equivalent</span> <span class="mi">2</span><span class="o">-</span><span class="n">m</span> <span class="n">height</span> <span class="kn">from</span> <span class="mf">10.0</span> <span class="n">m</span>
+
+              <span class="n">DateTime</span>      <span class="n">Elev_ft</span>  <span class="n">Temp_degF</span>
+<span class="mi">0</span>  <span class="mi">2000</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">21</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>  <span class="mf">1031.096834</span>      <span class="mf">51.44</span>
+<span class="mi">1</span>  <span class="mi">2000</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">21</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>  <span class="mf">1031.044342</span>      <span class="mf">51.44</span>
+<span class="mi">2</span>  <span class="mi">2000</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">21</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>  <span class="mf">1031.021376</span>      <span class="mf">51.44</span>
+<span class="mi">3</span>  <span class="mi">2000</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">21</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>  <span class="mf">1031.027938</span>      <span class="mf">51.44</span>
+<span class="mi">4</span>  <span class="mi">2000</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">21</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>  <span class="mf">1031.034499</span>      <span class="mf">51.44</span>
+<span class="n">assigning</span> <span class="n">profile</span> <span class="n">assuming</span> <span class="s1">&#39;tidy&#39;</span> <span class="nb">format</span>
+  <span class="n">Layer</span> <span class="o">----</span> <span class="n">Temp</span>  <span class="o">-----</span> <span class="n">TotE</span> <span class="o">------</span> <span class="n">Vol</span> <span class="o">------</span> <span class="n">MaxVol</span> 
+<span class="o">=====================================</span>
+  <span class="mi">0</span>       <span class="mf">45.3920</span>     <span class="mf">22469.0</span>      <span class="mf">495.0</span>       <span class="mf">495.0</span>
+  <span class="mi">1</span>       <span class="mf">45.4064</span>     <span class="mf">495338.7</span>      <span class="mf">10909.0</span>       <span class="mf">10909.0</span>
+  <span class="mi">2</span>       <span class="mf">45.5720</span>     <span class="mf">505985.9</span>      <span class="mf">11103.0</span>       <span class="mf">11103.0</span>
+  <span class="mi">3</span>       <span class="mf">45.7160</span>     <span class="mf">560432.4</span>      <span class="mf">12259.0</span>       <span class="mf">12259.0</span>
+  <span class="mi">4</span>       <span class="mf">45.7340</span>     <span class="mf">747110.6</span>      <span class="mf">16336.0</span>       <span class="mf">16336.0</span>
+  <span class="mi">5</span>       <span class="mf">45.8891</span>     <span class="mf">615831.2</span>      <span class="mf">13420.0</span>       <span class="mf">13420.0</span>
+  <span class="mi">6</span>       <span class="mf">45.9267</span>     <span class="mf">724907.6</span>      <span class="mf">15784.0</span>       <span class="mf">15784.0</span>
+  <span class="mi">7</span>       <span class="mf">45.9517</span>     <span class="mf">903456.1</span>      <span class="mf">19661.0</span>       <span class="mf">19661.0</span>
+  <span class="mi">8</span>       <span class="mf">46.0501</span>     <span class="mf">971749.0</span>      <span class="mf">21102.0</span>       <span class="mf">21102.0</span>
+  <span class="mi">9</span>       <span class="mf">46.1554</span>     <span class="mf">1186931.8</span>      <span class="mf">25716.0</span>       <span class="mf">25716.0</span>
+  <span class="mi">10</span>       <span class="mf">46.4109</span>     <span class="mf">1371906.1</span>      <span class="mf">29560.0</span>       <span class="mf">29560.0</span>
+  <span class="mi">11</span>       <span class="mf">46.6830</span>     <span class="mf">1577977.2</span>      <span class="mf">33802.0</span>       <span class="mf">33802.0</span>
+  <span class="mi">12</span>       <span class="mf">47.1389</span>     <span class="mf">1808577.3</span>      <span class="mf">38367.0</span>       <span class="mf">38367.0</span>
+  <span class="mi">13</span>       <span class="mf">47.5503</span>     <span class="mf">2041285.3</span>      <span class="mf">42929.0</span>       <span class="mf">42929.0</span>
+  <span class="mi">14</span>       <span class="mf">48.0396</span>     <span class="mf">2284713.3</span>      <span class="mf">47559.0</span>       <span class="mf">47559.0</span>
+  <span class="mi">15</span>       <span class="mf">48.7852</span>     <span class="mf">2572640.8</span>      <span class="mf">52734.0</span>       <span class="mf">52734.0</span>
+  <span class="mi">16</span>       <span class="mf">50.0020</span>     <span class="mf">2931617.8</span>      <span class="mf">58630.0</span>       <span class="mf">58630.0</span>
+  <span class="mi">17</span>       <span class="mf">50.4860</span>     <span class="mf">3290526.0</span>      <span class="mf">65177.0</span>       <span class="mf">65177.0</span>
+  <span class="mi">18</span>       <span class="mf">50.4860</span>     <span class="mf">3615504.4</span>      <span class="mf">71614.0</span>       <span class="mf">71614.0</span>
+  <span class="mi">19</span>       <span class="mf">50.4860</span>     <span class="mf">3955780.0</span>      <span class="mf">78354.0</span>       <span class="mf">78354.0</span>
+  <span class="mi">20</span>       <span class="mf">50.4860</span>     <span class="mf">4317360.8</span>      <span class="mf">85516.0</span>       <span class="mf">85516.0</span>
+  <span class="mi">21</span>       <span class="mf">50.4860</span>     <span class="mf">4673085.1</span>      <span class="mf">92562.0</span>       <span class="mf">92562.0</span>
+  <span class="mi">22</span>       <span class="mf">50.4922</span>     <span class="mf">5066382.8</span>      <span class="mf">100340.0</span>       <span class="mf">100340.0</span>
+  <span class="mi">23</span>       <span class="mf">50.5040</span>     <span class="mf">5443523.1</span>      <span class="mf">107784.0</span>       <span class="mf">107784.0</span>
+  <span class="mi">24</span>       <span class="mf">50.5040</span>     <span class="mf">5867302.2</span>      <span class="mf">116175.0</span>       <span class="mf">116175.0</span>
+  <span class="mi">25</span>       <span class="mf">50.5040</span>     <span class="mf">6260778.9</span>      <span class="mf">123966.0</span>       <span class="mf">123966.0</span>
+  <span class="mi">26</span>       <span class="mf">50.5040</span>     <span class="mf">6713294.7</span>      <span class="mf">132926.0</span>       <span class="mf">132926.0</span>
+  <span class="mi">27</span>       <span class="mf">50.5220</span>     <span class="mf">7146741.1</span>      <span class="mf">141458.0</span>       <span class="mf">141458.0</span>
+  <span class="mi">28</span>       <span class="mf">50.5400</span>     <span class="mf">5144466.6</span>      <span class="mf">101790.0</span>       <span class="mf">151017.0</span>
+  <span class="mi">29</span>       <span class="n">nan</span>     <span class="n">nan</span>      <span class="mf">0.0</span>       <span class="mf">159741.0</span>
+  <span class="mi">30</span>       <span class="n">nan</span>     <span class="n">nan</span>      <span class="mf">0.0</span>       <span class="mf">169833.0</span>
+  <span class="mi">31</span>       <span class="n">nan</span>     <span class="n">nan</span>      <span class="mf">0.0</span>       <span class="mf">179264.0</span>
+  <span class="mi">32</span>       <span class="n">nan</span>     <span class="n">nan</span>      <span class="mf">0.0</span>       <span class="mf">189926.0</span>
+  <span class="mi">33</span>       <span class="n">nan</span>     <span class="n">nan</span>      <span class="mf">0.0</span>       <span class="mf">200603.0</span>
+  <span class="mi">34</span>       <span class="n">nan</span>     <span class="n">nan</span>      <span class="mf">0.0</span>       <span class="mf">211922.0</span>
+  <span class="mi">35</span>       <span class="n">nan</span>     <span class="n">nan</span>      <span class="mf">0.0</span>       <span class="mf">223206.0</span>
+  <span class="mi">36</span>       <span class="n">nan</span>     <span class="n">nan</span>      <span class="mf">0.0</span>       <span class="mf">235179.0</span>
+  <span class="mi">37</span>       <span class="n">nan</span>     <span class="n">nan</span>      <span class="mf">0.0</span>       <span class="mf">246549.0</span>
+  <span class="mi">38</span>       <span class="n">nan</span>     <span class="n">nan</span>      <span class="mf">0.0</span>       <span class="mf">259112.0</span>
+  <span class="mi">39</span>       <span class="n">nan</span>     <span class="n">nan</span>      <span class="mf">0.0</span>       <span class="mf">270518.0</span>
+  <span class="mi">40</span>       <span class="n">nan</span>     <span class="n">nan</span>      <span class="mf">0.0</span>       <span class="mf">283609.0</span>
+  <span class="mi">41</span>       <span class="n">nan</span>     <span class="n">nan</span>      <span class="mf">0.0</span>       <span class="mf">205373.0</span>
+
+</pre></div>
+</div>
+<p>If you got something similar to the console listing shown above, your Shasta <em>ResTemp</em> model is initialized and ready to run.
+We’ve assigned the model to the variable name <code class="docutils literal notranslate"><span class="pre">shasta</span></code>, so now we can access the reservoir functions in combination with the Shasta-specific data through this object.</p>
+</section>
+<section id="run-the-model">
+<h3><span class="section-number">3.4.2.3. </span>Run the model<a class="headerlink" href="#run-the-model" title="Permalink to this heading">#</a></h3>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./tutorials"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="shasta_standalone.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">3.3. </span>Shasta Reservoir: Standalone Simulation - Part One</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="keswick_standalone.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3.5. </span>Tutorial: Simulating Keswick Reservoir - an example fully-mixed tailbay reservoir type</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-a-simulation">3.4.1. Setting up a simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-restemp-simulation-for-shasta-reservoir">3.4.2. Running a <em>ResTemp</em> Simulation for Shasta Reservoir</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#package-imports">3.4.2.1. Package imports</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initialization">3.4.2.2. Initialization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-the-model">3.4.2.3. Run the model</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By James Gilbert, UC Santa Cruz
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

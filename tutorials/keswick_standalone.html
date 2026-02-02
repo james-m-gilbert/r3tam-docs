@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>3.4. Tutorial: Simulating Keswick Reservoir - an example fully-mixed tailbay reservoir type &#8212; Rapid Reservoir-River Temperature Assessment Model (R3TAM)</title>
+    <title>3.5. Tutorial: Simulating Keswick Reservoir - an example fully-mixed tailbay reservoir type &#8212; Rapid Reservoir-River Temperature Assessment Model (R3TAM)</title>
   
   
   
@@ -65,7 +65,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/keswick_standalone';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="3.3. Shasta Reservoir: Standalone Simulation" href="shasta_standalone.html" />
+    <link rel="prev" title="3.4. Shasta Reservoir: Standalone Simulation - Part Two" href="shasta_standalone_runningmodel.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -152,8 +152,8 @@ const thebe_selector_output = ".output, .cell_output"
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Rapid Reservoir-River Temperature Assessment Model (R3TAM) - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Rapid Reservoir-River Temperature Assessment Model (R3TAM) - Home"/>`);</script>
+    <img src="../_static/logo_v01.png" class="logo__image only-light" alt="Rapid Reservoir-River Temperature Assessment Model (R3TAM) - Home"/>
+    <script>document.write(`<img src="../_static/logo_v01.png" class="logo__image only-dark" alt="Rapid Reservoir-River Temperature Assessment Model (R3TAM) - Home"/>`);</script>
   
   
 </a></div>
@@ -169,15 +169,16 @@ const thebe_selector_output = ".output, .cell_output"
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../discussion.html">1. Discussion: Motivation and Concepts</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../reference_.html">2. Reference: Motivation and Concepts</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference_.html">2. Reference: Description of model components</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../reference/vertically_stratified_reservoir/restemp.html">2.1. ResTemp: A Simplified Model of Vertically-Stratifying Reservoirs</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../tutorials_.html">3. Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="getting_started.html">3.1. Getting Started with the Rapid Reservoir-River Temperature Assessment Modeling (R3TAM) Framework</a></li>
 
-<li class="toctree-l2"><a class="reference internal" href="shasta_standalone.html">3.3. Shasta Reservoir: Standalone Simulation</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.4. Tutorial: Simulating Keswick Reservoir - an example fully-mixed tailbay reservoir type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shasta_standalone.html">3.3. Shasta Reservoir: Standalone Simulation - Part One</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shasta_standalone_runningmodel.html">3.4. Shasta Reservoir: Standalone Simulation - Part Two</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.5. Tutorial: Simulating Keswick Reservoir - an example fully-mixed tailbay reservoir type</a></li>
 </ul>
 </li>
 </ul>
@@ -375,14 +376,14 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#keswick-reservoir-specifications">3.4.1. Keswick Reservoir Specifications</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-inputs">3.4.2. Model Inputs</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#meteorology">3.4.2.1. Meteorology</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters">3.4.2.2. Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#keswick-reservoir-specifications">3.5.1. Keswick Reservoir Specifications</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-inputs">3.5.2. Model Inputs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#meteorology">3.5.2.1. Meteorology</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters">3.5.2.2. Parameters</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-setup">3.4.3. Model Setup</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#import-module">3.4.3.1. Import Module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-setup">3.5.3. Model Setup</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#import-module">3.5.3.1. Import Module</a></li>
 </ul>
 </li>
 </ul>
@@ -397,7 +398,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="tutorial-simulating-keswick-reservoir-an-example-fully-mixed-tailbay-reservoir-type">
-<h1><span class="section-number">3.4. </span>Tutorial: Simulating Keswick Reservoir - an example fully-mixed tailbay reservoir type<a class="headerlink" href="#tutorial-simulating-keswick-reservoir-an-example-fully-mixed-tailbay-reservoir-type" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">3.5. </span>Tutorial: Simulating Keswick Reservoir - an example fully-mixed tailbay reservoir type<a class="headerlink" href="#tutorial-simulating-keswick-reservoir-an-example-fully-mixed-tailbay-reservoir-type" title="Permalink to this heading">#</a></h1>
 <p>The three main component models in the R3TAM framework represent different conceptualizations of how water temperature changes through managed resevoir-river systems.
 Tailbay or re-regulating reservoirs tend to be smaller volume impoundments that sit below a larger reservoir and serve the purpose of smoothing out variations in releases.
 They may also serve to collect and manage inflows from multiple sources, either natural or managed.
@@ -405,23 +406,23 @@ For purposes of modeling, such reservoirs are assumed to mix fully along the maj
 It is also assumed in this conceptualization that there is no significant vertical or lateral variation in temperature and that there is no selective withdrawal capability at the dam (after all, without vertical stratification, there is no water of different temperature to selectively withdraw).</p>
 <p>Keswick Reservoir, downstream of Shasta Reservoir on the Sacramento River in northern California, is a good example of this tailbay-type reservoir. This tutorial walks through the setup and execution of an R3TAM ~LongTemp~ mixed model of Keswick Reservoir for the recent historical period.</p>
 <section id="keswick-reservoir-specifications">
-<h2><span class="section-number">3.4.1. </span>Keswick Reservoir Specifications<a class="headerlink" href="#keswick-reservoir-specifications" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">3.5.1. </span>Keswick Reservoir Specifications<a class="headerlink" href="#keswick-reservoir-specifications" title="Permalink to this heading">#</a></h2>
 <p>asdfas.</p>
 </section>
 <section id="model-inputs">
-<h2><span class="section-number">3.4.2. </span>Model Inputs<a class="headerlink" href="#model-inputs" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">3.5.2. </span>Model Inputs<a class="headerlink" href="#model-inputs" title="Permalink to this heading">#</a></h2>
 <p>asdf</p>
 <section id="meteorology">
-<h3><span class="section-number">3.4.2.1. </span>Meteorology<a class="headerlink" href="#meteorology" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">3.5.2.1. </span>Meteorology<a class="headerlink" href="#meteorology" title="Permalink to this heading">#</a></h3>
 <p>asdf</p>
 </section>
 <section id="parameters">
-<h3><span class="section-number">3.4.2.2. </span>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">3.5.2.2. </span>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading">#</a></h3>
 <p>asdf</p>
 </section>
 </section>
 <section id="model-setup">
-<h2><span class="section-number">3.4.3. </span>Model Setup<a class="headerlink" href="#model-setup" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">3.5.3. </span>Model Setup<a class="headerlink" href="#model-setup" title="Permalink to this heading">#</a></h2>
 <p>Up to this point we have not run any code - we’ve just been setting up the input files that a simulation will use.
 In order to run our example Keswick Reservoir model, we’ll need to write a Python file (*.py) that connects the R3TAM framework models to the input data we’ve created.
 The following steps assume you have already installed the R3TAM code in a Python environment on your computer, and that you’ve activated that environment prior to running any of this code (or are referencing the correct environment kernel) in your IDE or editor of choice.</p>
@@ -431,7 +432,7 @@ The following steps assume you have already installed the R3TAM code in a Python
 The code could just as easily be transferred to a Jupyter notebook environment and executed by cell to achieve the same results.</p>
 </div>
 <section id="import-module">
-<h3><span class="section-number">3.4.3.1. </span>Import Module<a class="headerlink" href="#import-module" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">3.5.3.1. </span>Import Module<a class="headerlink" href="#import-module" title="Permalink to this heading">#</a></h3>
 <p>We will be using the <code class="docutils literal notranslate"><span class="pre">longtemp</span></code> component of R3TAM for the Keswick reservoir model, so the first step in setting up a run is to import this component from the package.
 If you were doing this from scratch, you’d first, open (or create) a new Python (*.py) file in your favorite editor or IDE  and name the file something descriptive like <em>keswick_tutorial.py</em>.
 We’ve already created this file - it’s available in the <strong>examples/keswick</strong> directory of the R3TAM <a class="reference external" href="https://github.com/james-m-gilbert/r3tam">GitHub repository</a> if you want to follow along - otherwise you can build the script according to the steps described below.
@@ -490,12 +491,12 @@ The next line calls the initialization function and creates our Keswick model ob
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="shasta_standalone.html"
+       href="shasta_standalone_runningmodel.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">3.3. </span>Shasta Reservoir: Standalone Simulation</p>
+        <p class="prev-next-title"><span class="section-number">3.4. </span>Shasta Reservoir: Standalone Simulation - Part Two</p>
       </div>
     </a>
 </div>
@@ -513,14 +514,14 @@ The next line calls the initialization function and creates our Keswick model ob
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#keswick-reservoir-specifications">3.4.1. Keswick Reservoir Specifications</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-inputs">3.4.2. Model Inputs</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#meteorology">3.4.2.1. Meteorology</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters">3.4.2.2. Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#keswick-reservoir-specifications">3.5.1. Keswick Reservoir Specifications</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-inputs">3.5.2. Model Inputs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#meteorology">3.5.2.1. Meteorology</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters">3.5.2.2. Parameters</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-setup">3.4.3. Model Setup</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#import-module">3.4.3.1. Import Module</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-setup">3.5.3. Model Setup</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#import-module">3.5.3.1. Import Module</a></li>
 </ul>
 </li>
 </ul>

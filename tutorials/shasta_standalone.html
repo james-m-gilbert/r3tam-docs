@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>3.3. Shasta Reservoir: Standalone Simulation &#8212; Rapid Reservoir-River Temperature Assessment Model (R3TAM)</title>
+    <title>3.3. Shasta Reservoir: Standalone Simulation - Part One &#8212; Rapid Reservoir-River Temperature Assessment Model (R3TAM)</title>
   
   
   
@@ -62,6 +62,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/shasta_standalone';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -153,8 +155,8 @@ const thebe_selector_output = ".output, .cell_output"
       
     
     
-    <img src="../_static/logo.png" class="logo__image only-light" alt="Rapid Reservoir-River Temperature Assessment Model (R3TAM) - Home"/>
-    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Rapid Reservoir-River Temperature Assessment Model (R3TAM) - Home"/>`);</script>
+    <img src="../_static/logo_v01.png" class="logo__image only-light" alt="Rapid Reservoir-River Temperature Assessment Model (R3TAM) - Home"/>
+    <script>document.write(`<img src="../_static/logo_v01.png" class="logo__image only-dark" alt="Rapid Reservoir-River Temperature Assessment Model (R3TAM) - Home"/>`);</script>
   
   
 </a></div>
@@ -170,14 +172,14 @@ const thebe_selector_output = ".output, .cell_output"
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../discussion.html">1. Discussion: Motivation and Concepts</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../reference_.html">2. Reference: Motivation and Concepts</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference_.html">2. Reference: Description of model components</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../reference/vertically_stratified_reservoir/restemp.html">2.1. ResTemp: A Simplified Model of Vertically-Stratifying Reservoirs</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../tutorials_.html">3. Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="getting_started.html">3.1. Getting Started with the Rapid Reservoir-River Temperature Assessment Modeling (R3TAM) Framework</a></li>
 
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.3. Shasta Reservoir: Standalone Simulation</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.3. Shasta Reservoir: Standalone Simulation - Part One</a></li>
 <li class="toctree-l2"><a class="reference internal" href="keswick_standalone.html">3.4. Tutorial: Simulating Keswick Reservoir - an example fully-mixed tailbay reservoir type</a></li>
 </ul>
 </li>
@@ -366,7 +368,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Shasta Reservoir: Standalone Simulation</h1>
+    <h1>Shasta Reservoir: Standalone Simulation - Part One</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -389,11 +391,36 @@ document.write(`
 </li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reservoir-specifications">3.3.2.2. Reservoir Specifications</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-parameters">3.3.2.3. Model Parameters</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reservoir-inflows">3.3.2.4. Reservoir Inflows</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reservoir-outlets">3.3.2.2. Reservoir Outlets</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flood-release">Flood Release</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#penstocks-and-selective-withdrawal">Penstocks and Selective Withdrawal</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#penstock-specifications">Penstock Specifications</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#selective-withdrawal-specifications">Selective Withdrawal Specifications</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#leakage">Leakage</a></li>
 </ul>
 </li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#river-outlets">River Outlets</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reservoir-specifications">3.3.2.3. Reservoir Specifications</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-elevations">Layer Elevations</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#elevation-volume-and-elevation-area-characteristics">Elevation-Volume and Elevation Area Characteristics</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-series-observation-inputs">3.3.2.4. Time Series &amp; Observation Inputs</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#reservoir-inflows">Reservoir Inflows</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#reservoir-outflows">Reservoir Outflows</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#meteorology">Meteorology</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#observations">Observations</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#observed-outflow">Observed Outflow</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#temperature-profiles">Temperature Profiles</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">3.3.3. References</a></li>
 </ul>
             </nav>
         </div>
@@ -405,14 +432,17 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="shasta-reservoir-standalone-simulation">
-<h1><span class="section-number">3.3. </span>Shasta Reservoir: Standalone Simulation<a class="headerlink" href="#shasta-reservoir-standalone-simulation" title="Permalink to this heading">#</a></h1>
-<p>For this first tutorial, we will simulate water temperature in Shasta Reservoir as a single model component - that is, without interacting with any other downstream information or conditions.
+  <section class="tex2jax_ignore mathjax_ignore" id="shasta-reservoir-standalone-simulation-part-one">
+<h1><span class="section-number">3.3. </span>Shasta Reservoir: Standalone Simulation - Part One<a class="headerlink" href="#shasta-reservoir-standalone-simulation-part-one" title="Permalink to this heading">#</a></h1>
+<p>For this first tutorial, we will work towards simulating water temperature in Shasta Reservoir as a single model component - that is, without interacting with any other downstream information or conditions.
 Later tutorials will cover a Keswick Reservoir component and methods for coupling these components together.</p>
+<p>Because Shasta Reservoir simulations are a bit more involved (more inputs, more parameters, selective withdrawal functions), this tutorial is broken into two parts.
+This first part covers the inputs to the model via a sequential walkthrough of the main input specification file.
+The second covers running the model under different configurations and reviewing basic results.</p>
 <section id="a-brief-introduction-to-shasta-reservoir-temperature-simulation">
 <h2><span class="section-number">3.3.1. </span>A brief introduction to Shasta Reservoir Temperature Simulation<a class="headerlink" href="#a-brief-introduction-to-shasta-reservoir-temperature-simulation" title="Permalink to this heading">#</a></h2>
 <p>There are many great resources for information on the history and technical details of water temperature management at Shasta Dam and Reservoir – and how it is commonly simulated in computer models – so I won’t go into much depth here.
-For now, the main point to consider is that the temperature of water stored in and released from Shasta Reservoir is affected by several key factors:</p>
+For now, the main point to consider is that the temperature of water stored in and released from Shasta Reservoir is affected by several key factors or processes:</p>
 <ol class="arabic simple">
 <li><p>The temperature and volume of water flowing into the reservoir</p></li>
 <li><p>The mixing and stratification (distinctly warmer water separating from cooler water below) of water within the reservoir volume</p></li>
@@ -426,8 +456,8 @@ The water in this cooler, lower zone is often what is desired for coldwater temp
 These factors are addressed by a set of calculations that occur at least once each time step - which for the Shasta <em>ResTemp</em> model is one day.
 At each time step, the model integrates information read in from user-provided input files, performs calculations, then updates the water temperature and water density conditions (we sometimes refer to these as the system “states”).
 The output from each time step is a record of those system states as well as other outcomes of interest - primarily the temperature of water released from Shasta Dam (e.g. via penstocks or river outlets) to the tailwater below.</p>
-<p>You can read more about the specifics of the process represenations in the reference sections or the Technical Memorandum document. &lt;&lt;&lt; add link &gt;&gt;&gt;
-The construction of the <em>ResTemp</em> code - including how the main factors mentioned above are translated to computational terms – determines the type and form of information and data that need to be provided by a modeler when performing simulations.
+<p>You can read more about the specifics of the process represenations in the reference sections (<em>currently under development</em>) or the Technical Memorandum document.</p>
+<p>The construction of the <em>ResTemp</em> code - including how the main factors mentioned above are translated to computational terms – determines the type and form of information and data that need to be provided by a modeler when performing simulations.
 We provide a description of these inputs in the sections below on our way toward running a standalone Shasta temperature simulation.</p>
 </section>
 <section id="model-inputs">
@@ -567,6 +597,10 @@ The first five (C1-C5) are the primary parameters, and the remaining set of para
 <td><p>10.0</p></td>
 <td><p>The height at which input wind speed is measured (assumed in units of meters). This is needed for potential adjustment to 2-m height assumed for wind mixing and evaporation calculations</p></td>
 </tr>
+<tr class="row-even"><td><p><strong>BlendingMethod</strong></p></td>
+<td><p>0.0</p></td>
+<td><p>Option for optimized blending among point sinks [0 = Blending using only hydraulic approximations; 1 = linear program optimized blending to match specified target temperature]</p></td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -585,6 +619,8 @@ A screenshot of these entries from the example Shasta specification file is show
 <p>The <code class="docutils literal notranslate"><span class="pre">*Timing*</span></code> entry includes two sub-entries <code class="docutils literal notranslate"><span class="pre">StartDate</span></code> and <code class="docutils literal notranslate"><span class="pre">EndDate</span></code>.
 The input for each should follow a <em>“month/day/year”</em> format.
 As an example, to start the simulation on January 1, 2000, one would enter ‘1/1/2000’ as the value to the <code class="docutils literal notranslate"><span class="pre">StartDate</span></code> key.</p>
+<p>The input datasets gathered for the Shasta model cover the period from January 1, 2000 through September 30, 2022.
+The input specification file for the first example sets the simulation period to a smaller window - January 1, 2014 through December 31, 2015.</p>
 <div class="dropdown admonition">
 <p class="admonition-title">Some notes on simulation timing</p>
 <p>Check to make sure that the <code class="docutils literal notranslate"><span class="pre">EndDate</span></code> entry is later than the <code class="docutils literal notranslate"><span class="pre">StartDate</span></code>.
@@ -594,47 +630,389 @@ The simulation will not run if this is not the case.</p>
 </div>
 </section>
 <section id="initial-condition">
-<h5>Initial condition<a class="headerlink" href="#initial-condition" title="Permalink to this heading">#</a></h5>
+<span id="sec-initcond"></span><h5>Initial condition<a class="headerlink" href="#initial-condition" title="Permalink to this heading">#</a></h5>
 <p>The <em>Intial Condition</em> entry is used to provide input to the model regarding how to intialize the reservoir states (storage volume and temperature).
 Current functionality is limited to reading in and assigning these states from observational data - this is is set by assigning the <code class="docutils literal notranslate"><span class="pre">Method</span></code> sub-entry as <em>‘from_obs’</em>.
-See the &lt;&lt;&lt;&lt; observation data section &gt;&gt;&gt;&gt; for more information about the observation data options and requirements.</p>
+See the (sec-obsprof) for more information about the observation data options and requirements.</p>
 <div class="dropdown admonition">
 <p class="admonition-title">Some notes on simulation timing</p>
 <p>The simulation start date set via <code class="docutils literal notranslate"><span class="pre">Timing</span> <span class="pre">&gt;</span> <span class="pre">StartDate</span></code> should correspond closely with a date of available observation data - that is, reservoir storage and temperature profiles. In the common case where the desired simulation start date and the available profile data do not exactly align, the model will automatically find the closest date to the set start date and assign the profile data accordingly. This is important to keep in mind when evaluating simulated temperature profiles around these initialization dates.</p>
 </div>
 </section>
 <section id="simulation-modes">
-<h5>Simulation modes<a class="headerlink" href="#simulation-modes" title="Permalink to this heading">#</a></h5>
+<span id="sec-simmodes"></span><h5>Simulation modes<a class="headerlink" href="#simulation-modes" title="Permalink to this heading">#</a></h5>
+<p>There are several user-selectable options that affect how a simulation proceeds or the types of information required as input.
+For the most part, these options are set under the <code class="docutils literal notranslate"><span class="pre">Simulation</span> <span class="pre">Mode</span></code> key in the specification file.
+The options used for the standalone Shasta Reservoir simulation are described here.</p>
+<ul class="simple">
+<li><p><strong>Hindcast</strong>: Set to <code class="docutils literal notranslate"><span class="pre">True</span></code> to indicate that gate operations are prescribed; if set to <code class="docutils literal notranslate"><span class="pre">False</span></code>, and the <em>SimGateOps</em> is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>, then <em><strong>ResTemp</strong></em> will attempt to automatically operate gates to meet a prescribed temperature target. This is set to <code class="docutils literal notranslate"><span class="pre">True</span></code> for this example because we are simulating over a historical period where we have observed inputs and actual gate operations.</p></li>
+<li><p><strong>SimGateOps</strong>: Set to <code class="docutils literal notranslate"><span class="pre">False</span></code> if  <strong>Hindcast = True</strong>; set to <code class="docutils literal notranslate"><span class="pre">True</span></code> if you want to dynamically operate temperature control gate options to meet a downstream temperature target</p></li>
+<li><p><strong>GateChgFreq</strong>: An integer number of days that sets the shortest interval over which a gate change can be made when run in <strong>Hindcast = False</strong> and/or <strong>SimGateOps = True</strong> modes. Ignored if <strong>Hindcast = True</strong>.</p></li>
+<li><p><strong>SimReleaseSchedule</strong>: [<em>Not currently functional</em>] - An option to dynamically set a reservoir release schedule based on flood rule requirements and other delivery rules</p></li>
+<li><p><strong>CalcEvap</strong>: Sets whether surface evaporation is dynamically calculated. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, then dew point data needs to be provided as an input time series. If <code class="docutils literal notranslate"><span class="pre">False</span></code>, the model will expect a prescribed evaporation time series input. For this example we set it to <code class="docutils literal notranslate"><span class="pre">True</span></code> to demonstrate the functionality. It can be set to <code class="docutils literal notranslate"><span class="pre">False</span></code> and use the USBR-reported reservoir evaporation provided in the input files.</p></li>
+<li><p><strong>ReinitMonth</strong>: If value is between 1 and 12, the model will attempt to reinitialize the reservoir profile on the specified month (e.g. 1 = January, 6 = June, 12 = Decmeber) if the simulation period covers multiple years. Specified in conjunction with <strong>ReinitDay</strong>. If set to 99, no reinitialization will occur.</p></li>
+<li><p><strong>ReinitDay</strong>: Integer to indicate day of the month (as set in <strong>ReinitMonth</strong>) to reinitialize the temperature profile in the reservoir. If <strong>ReinitMonth</strong> is set to 99, this value is ignored.</p></li>
+<li><p><strong>Debug</strong>: The flags for <strong>Release</strong> and <strong>General</strong> accept integer values and, when set to values greater than 0, will print out to the console window and log files various diagnostic information that can be helpful in debugging errors or understanding reasons for certain results. <em>Note: Increasing the <strong>Debug</strong> flags from 0 will slow down the simulation time.</em></p></li>
+</ul>
+<p>You can see how these options are set in the specification file for the Shasta reservoir example in <a class="reference internal" href="#fig-timingmode-sha"><span class="std std-numref">Fig. 3.2</span></a> above.</p>
 </section>
+</section>
+</section>
+<section id="reservoir-outlets">
+<h3><span class="section-number">3.3.2.2. </span>Reservoir Outlets<a class="headerlink" href="#reservoir-outlets" title="Permalink to this heading">#</a></h3>
+<p>A key part of simulating a reservoir with selective withdrawal capabilities is defining the characteristics of the different release or withdrawal options.
+The <em><strong>ResTemp</strong></em> model includes three categories of release options:</p>
+<ol class="arabic simple">
+<li><p>Flood release at the dam crest or spillway elevation</p></li>
+<li><p>Penstock release with (or without) selective withdrawal and leakage</p></li>
+<li><p>River release</p></li>
+</ol>
+<p>The options and configuration information related to each of these, and how those details are set for the Shasta example, are explained below.</p>
+<section id="flood-release">
+<h4>Flood Release<a class="headerlink" href="#flood-release" title="Permalink to this heading">#</a></h4>
+<p>The <em><strong>ResTemp</strong></em> model assumes that any time reservoir storage exceeds the maximum volume (as prescribed in the elevation-area-volume characteristics - see <a class="reference internal" href="#sec-resspec"><span class="std std-numref">Section 3.3.2.3</span></a>), and other outlets are at capacity or otherwise not able to evacuate the necessary volume of water, the excess storage above the dam crest or spillway elevation is released as a flood spill.
+Beyond the definition of the elevation-volume relationship for a reservoir and dam, no other information is required as input.</p>
+</section>
+<section id="penstocks-and-selective-withdrawal">
+<h4>Penstocks and Selective Withdrawal<a class="headerlink" href="#penstocks-and-selective-withdrawal" title="Permalink to this heading">#</a></h4>
+<p>The penstock release option is meant to represent the release of water through power-generating penstocks at a single set elevation.
+The penstock release can be augmented with additional options or constraints with selective withdrawal units (more on that below) and leakage units (again, more on that below).
+This approach was informed by the needs of simulating the Temperature Control Device (TCD) at Shasta Reservoir and follows, to the extent possible, the methods and techniques implemented in CE-QUAL-W2 models of Shasta Reservoir <span id="id1">[<a class="reference internal" href="#id8" title="Miles E. Daniels, Vamsi K. Sridharan, Eric M. Danner, and Sara N. John. Calibration and validation of linked water temperature models for the Shasta Reservoir and the Sacramento River from 2000 to 2015. NOAA Technical Memorandum NOAA-TM-NMFS-SWFSC-597, U.S. Department of Commerce, National Oceanic and Atmospheric Administration, National Marine Fisheries Service, Southwest Fisheries Science Center., March 2018. URL: https://repository.library.noaa.gov/view/noaa/17736 (visited on 2020-06-03), doi:10.7289/V5/TM-SWFSC-597.">Daniels <em>et al.</em>, 2018</a>, <a class="reference internal" href="#id7" title="Michael L Deas, Ibrahim E. Sogutlugil, Andrew Bale, and Stacy K. Tanaka. Shasta Lake and Keswick Reservoir Flow and Temperature Modeling - Development Report. Technical Report, Watercourse Engineering, Inc, Davis, CA, December 2020.">Deas <em>et al.</em>, 2020</a>]</span>.</p>
+<section id="penstock-specifications">
+<span id="penstockspec"></span><h5>Penstock Specifications<a class="headerlink" href="#penstock-specifications" title="Permalink to this heading">#</a></h5>
+<aside class="margin sidebar">
+<p class="sidebar-title"></p>
+<p>Recall that as a 1-D model, <em><strong>ResTemp</strong></em> cannot simulate lateral variation in temperatures</p>
+</aside>
+<p>Penstock releases are assumed to occur through one or more outlets at a single uniform elevation that can be represented with a single total capacity (i.e. as the sum of capacities of individual penstock pipes). Based on this, the key information that should be provided under the <code class="docutils literal notranslate"><span class="pre">Penstocks</span></code> entry are penstock elevation and penstock capacity (release limit).</p>
+<p>For the Shasta reservoir model, the penstock information is shown below.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">Penstocks</span><span class="p">:</span>
+<span class="w">   </span><span class="nt">PenstockElevation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">819.5</span>
+<span class="w">   </span><span class="nt">PenstockElevUnits</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ft&#39;</span>
+<span class="w">   </span><span class="nt">PenstockReleaseLimit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">18750.</span>
+<span class="w">   </span><span class="nt">PenstockReleaseLimit_Units</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;cfs&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="selective-withdrawal-specifications">
+<span id="swdspec"></span><h5>Selective Withdrawal Specifications<a class="headerlink" href="#selective-withdrawal-specifications" title="Permalink to this heading">#</a></h5>
+<p>While the <a class="reference internal" href="#penstockspec"><span class="std std-ref">penstock information</span></a> is relatively simple, the information required to define selective withdrawal configuration is a bit more involved.
+The options and information required by <em><strong>ResTemp</strong></em> for selective withdrawal are a result of the model being originally developed to capture the particular functionality (and idiosyncracies) of the Shasta TCD.
+Applying the model to other reservoirs may not require the full set of information described in this sub-section</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Selective</span> <span class="pre">Withdrawal</span></code> entry represents a section with multiple sub-entries. The first sub-entry (<code class="docutils literal notranslate"><span class="pre">CheckMinHead</span></code>) should indicate whether minimum head constraints are checked for each selective withdrawal element.
+The remaining entries set the characteristics and parameters of one or more selective withdrawal elements.
+These elements represent one or more gates that can be operated (opened and closed) independently but at a uniform elevation.
+For the Shasta TCD, these elements represent the four gate levels  - the upper, middle, lower (pressure relief), and side gate levels.</p>
+<p>The following snippet shows the section of the example Shasta input specification file that defines the four selective withdrawal elements used to represent the Shasta TCD.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">Selective Withdrawal</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">CheckMinHead</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+<span class="w">  </span><span class="nt">3</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;UpperGate&#39;</span>
+<span class="w">    </span><span class="nt">TopElev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1045.</span>
+<span class="w">    </span><span class="nt">TopElevUnits</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ft&#39;</span>
+<span class="w">    </span><span class="nt">BottomElev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000.</span>
+<span class="w">    </span><span class="nt">BottomElevUnits</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ft&#39;</span>
+<span class="w">    </span><span class="nt">NumberOfGates</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="w">    </span><span class="nt">MinHead</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20.</span>
+<span class="w">    </span><span class="nt">MinHeadUnits</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ft&#39;</span>
+<span class="w">    </span><span class="nt">A1GT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"> </span>
+<span class="w">    </span><span class="nt">B1GT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.33</span><span class="w"> </span>
+<span class="w">    </span><span class="nt">G1GT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.3</span><span class="w"> </span>
+<span class="w">    </span><span class="nt">NumPointSinks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">  </span><span class="nt">2</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;MiddleGate&#39;</span>
+<span class="w">    </span><span class="nt">TopElev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">945.</span>
+<span class="w">    </span><span class="nt">TopElevUnits</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ft&#39;</span>
+<span class="w">    </span><span class="nt">BottomElev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">900.</span>
+<span class="w">    </span><span class="nt">BottomElevUnits</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ft&#39;</span>
+<span class="w">    </span><span class="nt">NumberOfGates</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="w">    </span><span class="nt">MinHead</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">35.</span>
+<span class="w">    </span><span class="nt">MinHeadUnits</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ft&#39;</span>
+<span class="w">    </span><span class="nt">A1GT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.</span>
+<span class="w">    </span><span class="nt">B1GT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.33</span><span class="w"> </span>
+<span class="w">    </span><span class="nt">G1GT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.4</span><span class="w"> </span>
+<span class="w">    </span><span class="nt">NumPointSinks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">  </span><span class="nt">1</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;PressureReliefGate&#39;</span>
+<span class="w">    </span><span class="nt">TopElev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">831.</span>
+<span class="w">    </span><span class="nt">TopElevUnits</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ft&#39;</span>
+<span class="w">    </span><span class="nt">BottomElev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">804.</span>
+<span class="w">    </span><span class="nt">BottomElevUnits</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ft&#39;</span>
+<span class="w">    </span><span class="nt">NumberOfGates</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="w">    </span><span class="nt">MinHead</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">35.</span>
+<span class="w">    </span><span class="nt">MinHeadUnits</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ft&#39;</span>
+<span class="w">    </span><span class="nt">A1GT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+<span class="w">    </span><span class="nt">B1GT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.33</span><span class="w"> </span>
+<span class="w">    </span><span class="nt">G1GT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.45</span><span class="w"> </span>
+<span class="w">    </span><span class="nt">NumPointSinks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">  </span><span class="nt">0</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;SideGate&#39;</span>
+<span class="w">    </span><span class="nt">TopElev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">800.</span><span class="w"> </span>
+<span class="w">    </span><span class="nt">TopElevUnits</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ft&#39;</span>
+<span class="w">    </span><span class="nt">BottomElev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">720.</span>
+<span class="w">    </span><span class="nt">BottomElevUnits</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ft&#39;</span>
+<span class="w">    </span><span class="nt">NumberOfGates</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">    </span><span class="nt">MinHead</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">35.</span>
+<span class="w">    </span><span class="nt">MinHeadUnits</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ft&#39;</span>
+<span class="w">    </span><span class="nt">A1GT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.5</span>
+<span class="w">    </span><span class="nt">B1GT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.1</span><span class="w"> </span>
+<span class="w">    </span><span class="nt">G1GT</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span><span class="w"> </span>
+<span class="w">    </span><span class="nt">NumPointSinks</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+</pre></div>
+</div>
+<p>Each element or gate is set by assigning an integer number, ordered from lowest elevation to highest.
+For the Shasta TCD, that means that the side gate is assigned the number 0 and the upper-most gate is assigned the number 3.</p>
+<p>Each gate can have a descriptive name assigned via the <code class="docutils literal notranslate"><span class="pre">Name</span></code> entry - this isn’t used by the model but is a helpful reminder of which gate is which.
+The <code class="docutils literal notranslate"><span class="pre">TopElev</span></code> and <code class="docutils literal notranslate"><span class="pre">BottomElev</span></code> entries set the top and bottom elevations of the gates that make up that element or gate level.
+The corresponding units entries designate whether the elevations are in feet (<code class="docutils literal notranslate"><span class="pre">ft</span></code>) or meters (<code class="docutils literal notranslate"><span class="pre">m</span></code>) - the example Shasta model uses feet.</p>
+<p>Each gate level can have one or more operable gates or openings through which water is withdrawn. This is set using the <code class="docutils literal notranslate"><span class="pre">NumberOfGates</span></code> entry (5 for the upper, middle, and lower gate levels and 2 for the side gate on the TCD).
+When providing specified gate operations as inputs, the model will not recognize values that exceed the <code class="docutils literal notranslate"><span class="pre">NumberOfGates</span></code> setting for a gate level. Similarly, the model will open and close gates on a level up to the number set by <code class="docutils literal notranslate"><span class="pre">NumberOfGates</span></code> when dynamic gate operations are activated.</p>
+<p>The determination of how much water flows through a specific gate level when one or more gates on that level are open is a complicated and somewhat uncertain process. The <em><strong>ResTemp</strong></em> model employs the hydraulic approximations for flow through submerged large orifices as documented in CE-QUAL-W2. The parameters <code class="docutils literal notranslate"><span class="pre">A1GT</span></code>, <code class="docutils literal notranslate"><span class="pre">B1GT</span></code>, &amp; <code class="docutils literal notranslate"><span class="pre">G1GT</span></code> are used in these hydraulic approximations and help define the maximum flow through an opening with the specified height (from the top and bottom elevations) and hydraulic head (determined from the reservoir water surface elevation). These hydraulic calculations are used only to determine the relative amount of flow through gate levels with one or more gates open. If only a single gate level has open gates, then it is assumed that the full penstock release goes through that gate level.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">MinHead</span></code> entry sets the minimum head requirement, relative to that level’s bottom elevation, for that gate level to be operated in isolation. This constraint is in effect only if the <code class="docutils literal notranslate"><span class="pre">CheckMinHead</span></code> entry is set to <code class="docutils literal notranslate"><span class="pre">True</span></code>. Using the <em>UpperGate</em> entry as an example, for a gate on that level to be opened if all lower gate levels are closed, the reservoir surface elevation must be at least 1020 feet (<code class="docutils literal notranslate"><span class="pre">BottomElev</span></code> [1000 ft] + <code class="docutils literal notranslate"><span class="pre">MinHead</span></code> [20 ft]).</p>
+<p>Finally, the <code class="docutils literal notranslate"><span class="pre">NumPointSinks</span></code> sets the number of discrete point locations across the vertical span of an open gate level at which withdrawal envelopes are calculated (this affects the aggregate TCD release temperature and the removal of water from within the water column).
+The large gate openings on selective withdrawal structures such as the Shasta TCD cannot be well represented by a single calculation point and so are approximated using multiple point sinks that are distributed across the vertical span of the open gate. Increasing the number of point sinks may improve resolution of release temperatures and/or affects to the temperature profile in the reservoir, but may also increase simulation time.
+The number of point sinks set in the example Shasta specification file were found to be a good approximation.</p>
+</section>
+<section id="leakage">
+<span id="lkgspec"></span><h5>Leakage<a class="headerlink" href="#leakage" title="Permalink to this heading">#</a></h5>
+<p>One factor that complicates the representation of the Shasta TCD is that the operation of the gates alone cannot account for the temperature of the water released through the penstocks.
+Incorporating the effects of leakage through non-operable surfaces of the TCD structure improves the performance of water temperature simulations, so we do the same with <em><strong>ResTemp</strong></em>.
+The approximation of leakage phenomena implemented here follows the approach described by <span id="id2">[<a class="reference internal" href="#id7" title="Michael L Deas, Ibrahim E. Sogutlugil, Andrew Bale, and Stacy K. Tanaka. Shasta Lake and Keswick Reservoir Flow and Temperature Modeling - Development Report. Technical Report, Watercourse Engineering, Inc, Davis, CA, December 2020.">Deas <em>et al.</em>, 2020</a>]</span> and consists of eight (8) leakage zones at various locations on the TCD.</p>
+<p>Each leakage zone is characterized by a top and bottom elevation (<code class="docutils literal notranslate"><span class="pre">TopElev</span></code> and <code class="docutils literal notranslate"><span class="pre">BottomElev</span></code> as in the <a class="reference internal" href="#swdspec"><span class="std std-ref">Selective Withdrawal section</span></a>) that determine where in the water column the leakage water will be drawn from.
+The other entries in the specification file (<code class="docutils literal notranslate"><span class="pre">LeakageFactor</span></code> and <code class="docutils literal notranslate"><span class="pre">OutletExclude</span></code>) only apply if an older leakage representation is used (see <span id="id3">[<a class="reference internal" href="#id8" title="Miles E. Daniels, Vamsi K. Sridharan, Eric M. Danner, and Sara N. John. Calibration and validation of linked water temperature models for the Shasta Reservoir and the Sacramento River from 2000 to 2015. NOAA Technical Memorandum NOAA-TM-NMFS-SWFSC-597, U.S. Department of Commerce, National Oceanic and Atmospheric Administration, National Marine Fisheries Service, Southwest Fisheries Science Center., March 2018. URL: https://repository.library.noaa.gov/view/noaa/17736 (visited on 2020-06-03), doi:10.7289/V5/TM-SWFSC-597.">Daniels <em>et al.</em>, 2018</a>]</span> for more details).</p>
+<p>Because the leakage forumulation is specific to the Shasta TCD, the remaining parameters used to implement the leakage calculations are hard-coded as a special function in <em><strong>ResTemp</strong></em>.
+The interested modeler can review the specifics in the function <em>calc_leakageMDWE</em> in the <code class="docutils literal notranslate"><span class="pre">outflow.py</span></code> file in the <a class="reference external" href="https://github.com/james-m-gilbert/r3tam/blob/main/src/r3tam/outflow.py">R3TAM code repository</a>.</p>
+</section>
+</section>
+<section id="river-outlets">
+<span id="rivoutspec"></span><h4>River Outlets<a class="headerlink" href="#river-outlets" title="Permalink to this heading">#</a></h4>
+<p>The final option for releases is through river outlets. <em><strong>ResTemp</strong></em> river outlets can be assigned at different elevations but, like with penstocks and selective withdrawal elements, cannot capture lateral variation and must represent a total capacity for all outlets at a given elevation.
+In contrast to the selective withdrawal elements, the river outlets are assumed to be small enough that a single point sink for each outlet element is appropriate.</p>
+<p>The Shasta Reservoir example simulation uses three (3) river outlet elements to represent river outlet structures at three levels on the dam face.
+The entries for these elements are shown in the snippet below.
+The elevations (<code class="docutils literal notranslate"><span class="pre">TopElev</span></code> and <code class="docutils literal notranslate"><span class="pre">BottomElev</span></code> as in other release structure specifications) and total capacity are set for each river outlet element. The capacities represent the sum of capacities from individual river outlets (e.g. if there are three river outlets on a level with a capacity of 10,000 cfs each, the listed capacity for that element in the specification file would be 30,000 cfs).</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">RiverOutlets</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">3</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">TopElev</span><span class="p">:</span><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">946.25</span><span class="w"> </span>
+<span class="w">    </span><span class="nt">TopElevUnits</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ft&#39;</span>
+<span class="w">    </span><span class="nt">BottomElev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">937.75</span><span class="w"> </span>
+<span class="w">    </span><span class="nt">BottomElevUnits</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ft&#39;</span>
+<span class="w">    </span><span class="nt">Capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">28800.</span><span class="w"> </span>
+<span class="w">    </span><span class="nt">CapacityUnits</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;cfs&#39;</span>
+<span class="w">  </span><span class="nt">2</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">TopElev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">837.75 + (102/12.)</span>
+<span class="w">    </span><span class="nt">TopElevUnits</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ft&#39;</span>
+<span class="w">    </span><span class="nt">BottomElev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">837.75</span>
+<span class="w">    </span><span class="nt">BottomElevUnits</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ft&#39;</span>
+<span class="w">    </span><span class="nt">Capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30000.</span>
+<span class="w">    </span><span class="nt">CapacityUnits</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;cfs&#39;</span>
+<span class="w">  </span><span class="nt">1</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">TopElev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">737.75 + (102/12.)</span>
+<span class="w">    </span><span class="nt">TopElevUnits</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ft&#39;</span>
+<span class="w">    </span><span class="nt">BottomElev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">737.75</span>
+<span class="w">    </span><span class="nt">BottomElevUnits</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ft&#39;</span>
+<span class="w">    </span><span class="nt">Capacity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20000.</span>
+<span class="w">    </span><span class="nt">CapacityUnits</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;cfs&#39;</span>
+</pre></div>
+</div>
 </section>
 </section>
 <section id="reservoir-specifications">
-<h3><span class="section-number">3.3.2.2. </span>Reservoir Specifications<a class="headerlink" href="#reservoir-specifications" title="Permalink to this heading">#</a></h3>
+<span id="sec-resspec"></span><h3><span class="section-number">3.3.2.3. </span>Reservoir Specifications<a class="headerlink" href="#reservoir-specifications" title="Permalink to this heading">#</a></h3>
 <p>The <em>ResTemp</em> formulation treats a reservoir as a single volume of water that can vary vertically  but is assumed to be uniform laterally.
 To distinguish this vertical variation in temperature the reservoir volume is assigned a certain number of layers by the modeler.
 The number and thickness (they don’t all have to be the same size) of the layers determines how finely or coarsely the resulting temperature simulation will be, and it can affect the accuracy of the simulation.</p>
-<p>The text file that specifies these layers for the Shasta example model can be found within the <code class="docutils literal notranslate"><span class="pre">inputs</span></code> folder and is titled <code class="docutils literal notranslate"><span class="pre">layers42.txt</span></code>.
-The file contains a simple listing of index and elevation values (in units of feet) ordered sequentially from low to high.
+<section id="layer-elevations">
+<h4>Layer Elevations<a class="headerlink" href="#layer-elevations" title="Permalink to this heading">#</a></h4>
+<p>The discretization of the reservoir volume into layers is set via the <code class="docutils literal notranslate"><span class="pre">LayerElevations</span></code> entry in the specification file (shown below).
+The <code class="docutils literal notranslate"><span class="pre">Values</span></code> sub-entry below <code class="docutils literal notranslate"><span class="pre">LayerElevations</span></code> can take a direct listing of elevation values or a path to a text file that includes such a listing.
+This file is provided for the Shasta example model in the <code class="docutils literal notranslate"><span class="pre">inputs</span></code> folder and is titled <code class="docutils literal notranslate"><span class="pre">layers42.txt</span></code>, as shown in the input specification file.</p>
+<p>The file contains a simple listing of index and elevation values (in units of feet) ordered sequentially from low to high.
 Each elevation value sets the bounds of a layer - there are 43 values listed to define the top and bottom elevation of 42 layers.
 Note that the layer definitions encompass the elevation range of a full Shasta reservoir - that is, up to 1067 feet above mean sea level.
 This sets the maximum elevation of the reservoir, but the actual volume at any given time step will depend on the mass balance of flows in an out of the reservoir.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">LayerElevations</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">Units</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ft&#39;</span>
+<span class="w">  </span><span class="nt">Values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;inputs/layers42.txt&#39;</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+</section>
+<section id="elevation-volume-and-elevation-area-characteristics">
+<span id="elevareavolspec"></span><h4>Elevation-Volume and Elevation Area Characteristics<a class="headerlink" href="#elevation-volume-and-elevation-area-characteristics" title="Permalink to this heading">#</a></h4>
 <p>The ResTemp model tracks water volume, temperature, and heat exchange at each layer.
 This requires that the volume and area of each layer be defined.
-This is done through two more look-up tables provided in the <code class="docutils literal notranslate"><span class="pre">inputs</span></code> folder:</p>
+This is done through two more look-up tables that are set through the <code class="docutils literal notranslate"><span class="pre">ElevAreaTable</span></code> and <code class="docutils literal notranslate"><span class="pre">ElevStorTable</span></code> entries in the input specification file (below).</p>
+<p>For the Shasta Reservoir example, these files are provided in the <code class="docutils literal notranslate"><span class="pre">inputs</span></code> folder:</p>
 <ul class="simple">
 <li><p><strong>ShastaElevationAreaTable.txt</strong>: Relates the surface area of each layer top/bottom to the elevation</p></li>
 <li><p><strong>ShastaElevationCapacityTable.txt</strong>: Sets the total volume of the reservoir when water is filled to that elevation</p></li>
 </ul>
 <p>The ResTemp code reads in these three files (layer specification: <code class="docutils literal notranslate"><span class="pre">layers42.txt</span></code>, elevation-area: <code class="docutils literal notranslate"><span class="pre">ShastaElevationAreaTable.txt</span></code>, &amp; elevation-volume: <code class="docutils literal notranslate"><span class="pre">ShastaElevationCapacityTable.txt</span></code> ) as part of the model initialization and automatically assigns incremental volumes and elevations to each layer that comprises the model.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">ElevAreaTable</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">Units</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ft&#39;</span>
+<span class="w">  </span><span class="nt">Values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;inputs/ShastaElevationAreaTable.txt&#39;</span><span class="p p-Indicator">]</span>
+<span class="nt">ElevStorTable</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">Units</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ft&#39;</span>
+<span class="w">  </span><span class="nt">Values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;inputs/ShastaElevationCapacityTable.txt&#39;</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
 </section>
-<section id="model-parameters">
-<h3><span class="section-number">3.3.2.3. </span>Model Parameters<a class="headerlink" href="#model-parameters" title="Permalink to this heading">#</a></h3>
-<p>The ResTemp model uses five main parameters and up to another 10 additional parameters, depending on simulation options, to specify heat exchange and mixing processes.
-These are the parameters that can be adjusted via a calibration process to better fit simulated temperature profiles, fluxes, and release temperatures to observed data.</p>
 </section>
+<section id="time-series-observation-inputs">
+<h3><span class="section-number">3.3.2.4. </span>Time Series &amp; Observation Inputs<a class="headerlink" href="#time-series-observation-inputs" title="Permalink to this heading">#</a></h3>
+<p>The input specifications described so far have either been simple key-value pairs or paths to basic lookup tables.
+The remaining inputs described in this section encompass time series data used as inputs to drive the model (e.g. inflows and meteorology) and observational data used to evaluate or initialize the model (e.g. temperature profiles).</p>
+<p>The following sections describe the different input types and specific files used for the example Shasta Reservoir model.
+Within the input specification file, the input time series (inflows, releases, and meteorology) are set under the <code class="docutils literal notranslate"><span class="pre">TimeSeriesInputs</span></code> main entry and observation data (measured temperature profiles, records of outflow temperatures) are set under the <code class="docutils literal notranslate"><span class="pre">Observations</span></code> main entry.</p>
+<div class="note admonition" id="note-tsinputs">
+<p class="admonition-title">A few notes on time series input files</p>
+<p>With the exception of water temperature profile data, the time series inputs should be provided in a consistent comma-separated value (CSV) format for each of the required input types.
+This format includes the following requirements:</p>
+<ol class="arabic simple">
+<li><p>A non-blank name for each column of data (preferably without spaces)</p></li>
+<li><p>The first column consists of a continuous (no gaps) and sequential (in chronological order) index of valid date values</p></li>
+<li><p>Each column of data should be filled (no blanks) and include only values that are valid for the input type; examples of invalid values might be a negative inflow value or a value of 354 degrees for air temperature.</p></li>
+</ol>
+<p>General categories of time series (Inflow, Outflow, Meteorology) can be specified from a single file or multiple files, but all data of a particular category must come from the same file.</p>
+<p>Files can contain additional columns that are not used by the model. <em><strong>ResTemp</strong></em> will only read in and use the columns of data listed in the specification file.</p>
+</div>
 <section id="reservoir-inflows">
-<h3><span class="section-number">3.3.2.4. </span>Reservoir Inflows<a class="headerlink" href="#reservoir-inflows" title="Permalink to this heading">#</a></h3>
+<span id="sec-inflows"></span><h4>Reservoir Inflows<a class="headerlink" href="#reservoir-inflows" title="Permalink to this heading">#</a></h4>
+<p>Current <em><strong>ResTemp</strong></em> models use only a single time series to set inflows to the reservoir.
+For reservoirs fed by multiple tributaries, like Shasta, these individual tributary flows should be accumulated into a single time series.
+This inflow time series is specified through the <code class="docutils literal notranslate"><span class="pre">Inflow</span></code> entry (under the main <code class="docutils literal notranslate"><span class="pre">TimeSeriesInputs</span></code> entry, as shown in the snippet below).
+The first part of the <code class="docutils literal notranslate"><span class="pre">Inflow</span></code> entry is the <code class="docutils literal notranslate"><span class="pre">Path</span></code> - this is where the path to a comma-separated value (csv) formatted time series file is provided (see <a class="reference internal" href="#note-tsinputs"><span class="std std-ref">the above note on time series inputs</span></a>).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Header</span></code> entry for inflows identifies the column names in the input CSV file that correspond to the inflow volumes (<code class="docutils literal notranslate"><span class="pre">inflow</span></code>) and inflow water temperature (<code class="docutils literal notranslate"><span class="pre">inflowTemp</span></code>).
+In the snippet below you can see that the second <code class="docutils literal notranslate"><span class="pre">inflow</span></code> line has been commented out using a <em>#</em> character. Doing this allows you to quickly switch between different time series if you have multiple versions in the input file that you’d like to test out.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">TimeSeriesInputs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">Inflow</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">inputs/ShastaInputs_2000to2022v20250225.csv</span>
+<span class="w">    </span><span class="nt">Header</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">inflow</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Inflow_minus_precip_AF&#39;</span><span class="w"> </span><span class="c1"># use precip as part of surface heat exchange</span>
+<span class="w">      </span><span class="c1">#inflow: &#39;Inflow_Total_AF&#39;      # lump precip in with inflow</span>
+<span class="w">      </span><span class="nt">inflowTemp</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;InflowTemp_degF&#39;</span>
+</pre></div>
+</div>
 </section>
+<section id="reservoir-outflows">
+<span id="sec-outflows"></span><h4>Reservoir Outflows<a class="headerlink" href="#reservoir-outflows" title="Permalink to this heading">#</a></h4>
+<p>The inputs in <code class="docutils literal notranslate"><span class="pre">Outflow</span></code> section (under the main <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code> entry, as with <code class="docutils literal notranslate"><span class="pre">Inflow</span></code>) set the releases and gate operations for the reservoir.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Path</span></code> entry sets the location of a CSV file that contains the required time series for total outflows, selective withdrawal gate operations, and river outlet operations.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Header</span></code> section contains entries that set the column names for the following specific outflow components:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">outflow</span></code>: The total volume of water released through the penstocks (does not include river outlet releases) for each time step; <em>Note - this should be the cumulative volume for the time step (e.g. one day), not a flow rate</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gates</span></code>: Sets the gate operations for the selective withdrawal elements as defined in the [selective withdrawal section][swdspec]; provided as a dictionary (bounded by braces) where the keys are integer indicators of the selective withdrawal elements and the values are text strings corresponding to the column name in the input file with the number of gates open on that level for each day</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tempTarg</span></code>: The name of the column that sets the temperature target immediately downstream of the dam; this is only used if dynamic gate operations are activated</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rivOutFlow</span></code>: The total volume of water released through all river outlets for each time step; <em>Note - this should be the cumulative volume for the time step (e.g. one day), not a flow rate</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rivOutlets</span></code>: Sets the river outlet operations for the available river outlets; provided as a dictionary (bounded by braces) where the keys are integer indicators of the river outle elements and the values are text strings corresponding to the column name in the input file with the number of outlets open on that level for each day</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">storage</span></code>: <em>No longer used - was originally provided as a way to determine outflow from prescribed storage if no outflow is available</em></p></li>
+</ul>
+<p>The file and column names for the outflow time series used with the Shasta Reservoir example are shown in the snippet below:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="nt">Outflow</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">inputs/ShastaInputs_2000to2022v20250225.csv</span>
+<span class="w">    </span><span class="nt">Header</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">outflow</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Total_Outflow_AF&#39;</span>
+<span class="w">      </span><span class="nt">gates</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">3</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Gate_Upp&#39;</span><span class="p p-Indicator">,</span><span class="nt"> 2</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Gate_Mid&#39;</span><span class="p p-Indicator">,</span><span class="nt"> 1</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Gate_PRG&#39;</span><span class="p p-Indicator">,</span><span class="nt"> 0</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Gate_SDG&#39;</span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="nt">tempTarg</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Tw_target_degF&#39;</span><span class="w"> </span>
+<span class="w">      </span><span class="nt">rivOutlets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">3</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Riv_Upp&#39;</span><span class="p p-Indicator">,</span><span class="nt"> 2</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Riv_Mid&#39;</span><span class="p p-Indicator">,</span><span class="nt"> 1</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Riv_Bot&#39;</span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="nt">rivOutFlow</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;River_Outlet_Release_AF&#39;</span>
+<span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Storage_AF&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="meteorology">
+<span id="sec-meteo"></span><h4>Meteorology<a class="headerlink" href="#meteorology" title="Permalink to this heading">#</a></h4>
+<p>The calculation of heat exchange at the water surface requires meteorological information for each time step.
+This data is specified under the <code class="docutils literal notranslate"><span class="pre">Meterology</span></code> entry within the <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code> section of the input specification file.</p>
+<p>As with the other <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code> categories, the <code class="docutils literal notranslate"><span class="pre">Path</span></code> entry sets the location of the CSV file with meteorological time series data.
+The <code class="docutils literal notranslate"><span class="pre">Header</span></code> section contains entries that set the column names for the following specific meteorological variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">airTemp</span></code>: Name for the column containing the air temperature at or near the reservoir; the column name should be appended with an underscore characer (“_”) and a units indicator (‘degF’ if the provided data are in degrees Fahrenheit and ‘degC’ if data are in degrees Celsius)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">solRad</span></code>: Name for the column containing the incoming shortwave solar radiation data, in units of <span class="math notranslate nohighlight">\(W m^-2\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wind</span></code>: Name for the column containing the windspeed data, in units of <span class="math notranslate nohighlight">\(m s^-2\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">precip</span></code>: Name for the column containing precipitation data, as a depth in inches, that falls on the reservoir surface. This is needed if the affect of rainfall on both the reservoir volume and surface water temperatures are to be included in the simulation. If the temperature affect of precipitation is to be ignored, the modeler should adjust inflows or otherwise ensure that the reservoir mass balance is not substantively affected by doing so.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">evap</span></code>: Column that contains the time series of reservoir evaporation. The column name should end with an underscore followed by a units indicator (allowable options are “_af”, “acre-feet”, or “_cfs”) so that the values are applied correctly. The values provided in this entry are not used if evaporation is calculated as part of the simulation (see the <code class="docutils literal notranslate"><span class="pre">CalcEvap</span></code> option in the <a class="reference internal" href="#sec-simmodes"><span class="std std-ref">Simulation Modes section</span></a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dewpt</span></code>: Name for the column containing dew point data. The column name should end with an underscore and units indicator (options are “_degC” or “_degF”). Dew point data are only used if the surface evaporation is calculated as part of the simulation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tke</span></code>: Name for the column containing data for the wind-driven turbulent kinetic energy at the water surface. This data is used to more accurately represent wind mixing on daily time steps.</p></li>
+</ul>
+<p>The entries for the <code class="docutils literal notranslate"><span class="pre">Meteorology</span></code> section of the example Shasta Reservoir model specification file are show below:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="nt">Meteorology</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">Path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">inputs/ShastaInputs_2000to2022v20250225.csv</span>
+<span class="w">    </span><span class="nt">Header</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">airTemp</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;AirTemp_degF&#39;</span>
+<span class="w">      </span><span class="nt">solRad</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;SolRad_gridMet_Wm2&#39;</span><span class="w"> </span><span class="c1">#or SolRad_Wm2 for Redding station data</span>
+<span class="w">      </span><span class="nt">wind</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Wind_msec&#39;</span>
+<span class="w">      </span><span class="nt">precip</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Precip_in&#39;</span><span class="w">  </span><span class="c1"># use as part of surface heat exchange</span>
+<span class="w">      </span><span class="c1">#precip: &#39;Precip_in_allzeros&#39; # lump precip in with inflow</span>
+<span class="w">      </span><span class="nt">evap</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Evap_cfs&#39;</span>
+<span class="w">      </span><span class="nt">dewpt</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Tdew_degC&#39;</span>
+<span class="w">      </span><span class="nt">tke</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Wind_TKE_Term&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="observations">
+<h4>Observations<a class="headerlink" href="#observations" title="Permalink to this heading">#</a></h4>
+<p>Observation data are used for initializing <em><strong>ResTemp</strong></em> models and for comparing to simulated results at the end of a model run.
+Entries for vertical temperature profiles are the only observation data that are strictly required for a simulation, but the specifications for both release temperatures and profiles are described below.</p>
+<section id="observed-outflow">
+<h5>Observed Outflow<a class="headerlink" href="#observed-outflow" title="Permalink to this heading">#</a></h5>
+<p>The <code class="docutils literal notranslate"><span class="pre">Outflow</span></code> entry under the <code class="docutils literal notranslate"><span class="pre">Observations</span></code> section in the input specification file sets the file location and column names for data relevant to the reservoir releases and related outcomes.</p>
+<p>The pattern for assigning the data is the same as for the <a class="reference internal" href="#sec-inflows"><span class="std std-ref">inflowa</span></a>, <a class="reference internal" href="#sec-outflows"><span class="std std-ref">outflows</span></a>, and <a class="reference internal" href="#sec-meteo"><span class="std std-ref">meteorology</span></a>: a <code class="docutils literal notranslate"><span class="pre">Path</span></code> entry with the location of the CSV time series file and a <code class="docutils literal notranslate"><span class="pre">Header</span></code> section with sub-entries where the column name of each data variable can be assigned.
+The types of data that can be provided in this section include:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">flow</span></code>: Volume of penstock outflow for each time step (note this is volume and not flow rate)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">temperature</span></code>: Temperature of water released from the reservoir or measured at a tailbay location</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">temperature_other</span></code>: If there is a second water temperature record, it can be provided here. For the Shasta Reservoir, there are two release temperature records - one at a sensor just downstream of the dam and one calculated from penstock temperatures</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">storage</span></code>: Reservoir storage; this is helpful in comparing simulated storage to the observed record to ensure accurate mass balance</p></li>
+</ul>
+<p>The observed outflow entries as provided in the example Shasta reservoir input specification file are provided here:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">Observations</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">Outflow</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">File</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">Path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">obs/ShastaOutflowStorageAreaObs_2000to2022v20230429.csv</span>
+<span class="w">      </span><span class="nt">Header</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">flow</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Total_Outflow_AF&#39;</span>
+<span class="w">        </span><span class="nt">temperature</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Tw_Temp_degF&#39;</span>
+<span class="w">        </span><span class="nt">temperature_other</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;TCD_WtAvgTemp_degF&#39;</span>
+<span class="w">        </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Storage_AF&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="temperature-profiles">
+<span id="sec-obsprof"></span><h5>Temperature Profiles<a class="headerlink" href="#temperature-profiles" title="Permalink to this heading">#</a></h5>
+<p>The final input dataset in the specification file is for vertical water temperature profiles. These data are required for initialization (see <a class="reference internal" href="#sec-initcond"><span class="std std-ref">Initial condition</span></a>) and are helpful for comparing to simulated reservoir temperature profiles to evaluate model performance.</p>
+<p>Because temperature profiles span multiple elevations for a given date, a simple time series format as used for other inputs is insufficient. Instead, the <code class="docutils literal notranslate"><span class="pre">Header</span></code> information provided in the <code class="docutils literal notranslate"><span class="pre">Profiles</span></code> input specification section (under the main <code class="docutils literal notranslate"><span class="pre">Observations</span></code> section) includes the following entries:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">index_cols</span></code>: A bracket-bound (“[]”) list of 2 integers that designate the 0-indexed columns in the csv file that contain, in order, the <em>date</em> and <em>elevation</em> of temperature values provided in a third column; for example, if <em>[0,1]</em> is provided, the first (0 = first in a zero-based index) column should contain date information and the second (1 = second in a zero-based index) column should contain elevation data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">elevation</span></code>: Name of the column that contains the elevation data; this should correspond to the same column as the second integer provided to <code class="docutils literal notranslate"><span class="pre">index_cols</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">temperature</span></code>: Name of the column that contains the water temperature values; the column name should end with an underscore character followed by a units indicator (options are “_degC” or “_degF”).</p></li>
+</ul>
+<p>The observed profile entries as provided in the example Shasta reservoir input specification file are provided here:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="nt">Profiles</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">File</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">Path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">obs/shasta_temp_profiles_00toSep22.csv</span>
+<span class="w">      </span><span class="nt">Header</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">index_cols</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="nv">1</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">elevation</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Elev_ft&#39;</span>
+<span class="w">        </span><span class="nt">temperature</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Temp_degF&#39;</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+<section id="references">
+<h2><span class="section-number">3.3.3. </span>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
+<div class="docutils container" id="id4">
+<dl class="citation">
+<dt class="label" id="id8"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id3">2</a>)</span></dt>
+<dd><p>Miles E. Daniels, Vamsi K. Sridharan, Eric M. Danner, and Sara N. John. Calibration and validation of linked water temperature models for the Shasta Reservoir and the Sacramento River from 2000 to 2015. NOAA Technical Memorandum NOAA-TM-NMFS-SWFSC-597, U.S. Department of Commerce, National Oceanic and Atmospheric Administration, National Marine Fisheries Service, Southwest Fisheries Science Center., March 2018. URL: <a class="reference external" href="https://repository.library.noaa.gov/view/noaa/17736">https://repository.library.noaa.gov/view/noaa/17736</a> (visited on 2020-06-03), <a class="reference external" href="https://doi.org/10.7289/V5/TM-SWFSC-597">doi:10.7289/V5/TM-SWFSC-597</a>.</p>
+</dd>
+<dt class="label" id="id7"><span class="brackets">2</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>)</span></dt>
+<dd><p>Michael L Deas, Ibrahim E. Sogutlugil, Andrew Bale, and Stacy K. Tanaka. Shasta Lake and Keswick Reservoir Flow and Temperature Modeling - Development Report. Technical Report, Watercourse Engineering, Inc, Davis, CA, December 2020.</p>
+</dd>
+</dl>
+</div>
 </section>
 </section>
 
@@ -714,11 +1092,36 @@ These are the parameters that can be adjusted via a calibration process to bette
 </li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reservoir-specifications">3.3.2.2. Reservoir Specifications</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-parameters">3.3.2.3. Model Parameters</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reservoir-inflows">3.3.2.4. Reservoir Inflows</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reservoir-outlets">3.3.2.2. Reservoir Outlets</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#flood-release">Flood Release</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#penstocks-and-selective-withdrawal">Penstocks and Selective Withdrawal</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#penstock-specifications">Penstock Specifications</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#selective-withdrawal-specifications">Selective Withdrawal Specifications</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#leakage">Leakage</a></li>
 </ul>
 </li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#river-outlets">River Outlets</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reservoir-specifications">3.3.2.3. Reservoir Specifications</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#layer-elevations">Layer Elevations</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#elevation-volume-and-elevation-area-characteristics">Elevation-Volume and Elevation Area Characteristics</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-series-observation-inputs">3.3.2.4. Time Series &amp; Observation Inputs</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#reservoir-inflows">Reservoir Inflows</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#reservoir-outflows">Reservoir Outflows</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#meteorology">Meteorology</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#observations">Observations</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#observed-outflow">Observed Outflow</a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#temperature-profiles">Temperature Profiles</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">3.3.3. References</a></li>
 </ul>
   </nav></div>
 
