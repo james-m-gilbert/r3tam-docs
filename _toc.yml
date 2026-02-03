@@ -16,6 +16,7 @@ chapters:
   sections:
   - file: tutorials/getting_started
   - file: tutorials/shasta_standalone
+  - file: tutorials/running_shasta_standalone
   - file: tutorials/keswick_standalone
 #  - file: tutorials\sacriver_standalone
 #  - file: tutorials\coupled_historical

@@ -73,7 +73,7 @@ The activation commands vary based on your platform:
 
 One final step - I recommend setting up a IPython/Jupyter kernel so you can interact with the R3TAM code in an IDE environment. To do that, you'll need to install additional libraries. I tend to use the Spyder IDE most frequently, so the command to install necessary components is: `pip install spyder-kernels==3.0.*`
   
-Once you've successfully activated your R3TAM virtual environment and isntalled the `spyder-kernels`, you are ready for installation!
+Once you've successfully activated your R3TAM virtual environment and installed the `spyder-kernels`, you are ready for installation!
 
 
 # Installing the R3TAM Python package

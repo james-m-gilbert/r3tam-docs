@@ -4,7 +4,7 @@
 title: Rapid Reservoir-River Temperature Assessment Model (R3TAM) 
 author: James Gilbert, UC Santa Cruz
 copyright: "2026"
-logo: logo.png
+logo: imgs_figs/logo_v01.png
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
@@ -23,7 +23,12 @@ sections:
 
 # Add a bibtex file so that we can create citations
 bibtex_bibfiles:
-  - references.bib
+  - "references.bib"
+
+sphinx:
+  config:
+    bibtex_reference_style: author_year
+#    bibtex_bibfiles: [references.bib]
 
 # Information about where the book exists on the web
 repository:
