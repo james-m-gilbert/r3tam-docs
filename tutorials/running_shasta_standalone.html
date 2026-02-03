@@ -382,8 +382,10 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#package-imports">3.4.2.1. Package imports</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initialization">3.4.2.2. Initialization</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-the-model">3.4.2.3. Run the model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finalize-and-review-results">3.4.2.4. Finalize and Review Results</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">3.4.3. Next steps</a></li>
 </ul>
             </nav>
         </div>
@@ -403,7 +405,7 @@ In this part of the tutorial we’ll go through the simpler process of using tha
 <h2><span class="section-number">3.4.1. </span>Setting up a simulation<a class="headerlink" href="#setting-up-a-simulation" title="Permalink to this heading">#</a></h2>
 <p>The yaml specification file we covered in the first part of this tutorial contains all the input information, but to make a simulation we need to connect that information to the <em><strong>R3TAM</strong></em> code that does the calculations and advances through our prescribed simulation period.
 We do this through a relatively Python script. In fact, the rest of this tutorial will be describing the contents of just such a Python file that can be used to run a Shasta model.</p>
-<p>To make things easier, I’ve provided the files needed to run the example simulations in a zipped folder here.
+<p>To make things easier, I’ve provided the files needed to run the example simulations in a zipped folder <a class="reference download internal" download="" href="../_downloads/037d35ee2006c384ed28bc09f7de4734/examples.zip"><span class="xref download myst">here</span></a>.
 If you haven’t already done so, download these files and place them in a directory where you’ll want to do your test runs.
 Once you’ve done that, navigate to the <em>shasta</em> folder (<code class="docutils literal notranslate"><span class="pre">examples/shasta</span></code>) and note the arrangement of files and folders.
 You should see a folder named <code class="docutils literal notranslate"><span class="pre">inputs</span></code>, one named <code class="docutils literal notranslate"><span class="pre">obs</span></code>, the YAML run specification file <code class="docutils literal notranslate"><span class="pre">shasta_standalone.yaml</span></code>, and several Python (<em>*.py</em>) files.</p>
@@ -419,7 +421,7 @@ The scripts generally include four important components:</p>
 <ol class="arabic simple">
 <li><p>Package/module imports</p></li>
 <li><p>Initialization</p></li>
-<li><p>Advancing through the simulation</p></li>
+<li><p>Run the model - advancing through the simulation</p></li>
 <li><p>Finalizing and reviewing results</p></li>
 </ol>
 <p>The following sections review how the contents of <code class="docutils literal notranslate"><span class="pre">shasta_stanadlone_example01.py</span></code> address each of these.</p>
@@ -566,10 +568,149 @@ Depending on the initialization volume, some layers will show <code class="docut
 </div>
 <p>If you got something similar to the console listing shown above, your Shasta <em>ResTemp</em> model is initialized and ready to run.
 We’ve assigned the model to the variable name <code class="docutils literal notranslate"><span class="pre">shasta</span></code>, so now we can access the reservoir functions in combination with the Shasta-specific data through this object.</p>
+<p>Before moving on the actual model simulation, it may be helpful to make clear what we are intending to simulate in this instance:</p>
+<ul class="simple">
+<li><p>First, we are simulating a historical period, calendar years 2014-2015</p>
+<ul>
+<li><p>You can confirm this in the YAML specification file under the <code class="docutils literal notranslate"><span class="pre">Timing</span></code> section.</p></li>
+</ul>
+</li>
+<li><p>We are using the observed historical meteorology, hydrology, and reservoir operations as input, so we should expect the simulated response to follow what happened in real life</p></li>
+<li><p>In this particular version, we set the <code class="docutils literal notranslate"><span class="pre">BlendingMethod</span></code> (in the <code class="docutils literal notranslate"><span class="pre">Parameters</span></code> section) to 0, meaning that the hydraulic approximations are used to assign flow through gates when multiple levels are open. This means we may see some jumps or discrpeancies in release temperatures, especially when there is a strong temperature gradient near the withdrawal envelope.</p></li>
+<li><p>This is the simplest configuration for running the model, so we should expect it to run relatively quickly, perhaps a few seconds or less per year.</p></li>
+</ul>
 </section>
 <section id="run-the-model">
 <h3><span class="section-number">3.4.2.3. </span>Run the model<a class="headerlink" href="#run-the-model" title="Permalink to this heading">#</a></h3>
+<p>With the model initialized, the next step is to run the simulation.
+Two key functions for doing this are:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">advance_restemp</span></code> - Performs calculations for inflows, mixing, and surface heat exchange</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">advance_swd</span></code> - Performs the calculations for selective withdrawal (‘swd’) and outflow</p></li>
+</ol>
+<p>A fully simulated time step executes both of these functions, in the order listed.
+Note that the <code class="docutils literal notranslate"><span class="pre">advance_swd</span></code> function has a named argument “<em>final</em>”.
+When set to <em>True</em>, upon running this function, the specified outflow and gate configuration will remove water from the reservoir and the impact of that will be propagated to the reservoir profile.
+If set to <em>False</em>, however, the effect of a release volume and gate configuration will be calculated but not propagated to the reservoir state.
+This functionality is necessary when running the model in a dynamic gate operation mode as it allows the user to test out different release options or gate configurations under the same in-reservoir conditions.</p>
+<p>The initialization process provides our <code class="docutils literal notranslate"><span class="pre">shasta</span></code> model object with the information about start date and simulation period, so running the simulation is simply a matter of looping through the dates that make up that simulation period and executing the two key functions (<code class="docutils literal notranslate"><span class="pre">advance_restemp</span></code> and <code class="docutils literal notranslate"><span class="pre">advance_swd</span></code> in sequence) for each iteration.
+The code excerpt for the <strong>Run the model</strong> section below shows how this looping can be done:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#%% Run the model</span>
+
+<span class="n">btime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> 
+<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">shasta</span><span class="o">.</span><span class="n">SimDates</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">shasta</span><span class="o">.</span><span class="n">advance_restemp</span><span class="p">()</span>
+
+    <span class="n">shasta</span><span class="o">.</span><span class="n">advance_swd</span><span class="p">(</span><span class="n">final</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">etime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> 
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;took </span><span class="si">{</span><span class="n">etime</span><span class="o">-</span><span class="n">btime</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>Note the <code class="docutils literal notranslate"><span class="pre">btime</span></code>, <code class="docutils literal notranslate"><span class="pre">etime</span></code> and final <code class="docutils literal notranslate"><span class="pre">print</span></code> statement are there simply to keep track of how long the simulation takes and are not necessary for the simulation to work.
+The <code class="docutils literal notranslate"><span class="pre">print(d)</span></code> statement is also not strictly necessary but is helpful for visualizing the progress of the simulation.
+Also note the <code class="docutils literal notranslate"><span class="pre">final=True</span></code> argument to the <code class="docutils literal notranslate"><span class="pre">shasta.advance_swd</span></code> function.
+We set this to <code class="docutils literal notranslate"><span class="pre">True</span></code> here because we are setting the gate operations directly and not performing any dynamic gate selection (confirm this by checking that <code class="docutils literal notranslate"><span class="pre">Hindcast</span> <span class="pre">=</span> <span class="pre">True</span></code> and <code class="docutils literal notranslate"><span class="pre">SimGateOps</span> <span class="pre">=</span> <span class="pre">False</span></code> under the <code class="docutils literal notranslate"><span class="pre">Simulation</span> <span class="pre">Mode</span></code> section).</p>
+<p>You can execute this section of code in your Python interpreter to run the simulation for the prescribed period (Jan 1, 2014 - Dec 31, 2015).
+You should see the dates of the simulation appear on your console window during the simulation.
+If all goes smoothly you’ll see the simulation reach 2015-12-31 00:00:00 followed by a statement of the time required for the whole process.
+On my computer it took 3.98 seconds, or about 2 seconds/year.</p>
+<p>The simulation is now complete, so the next step is to review the results and move on to whatever additional analysis is desired.</p>
 </section>
+<section id="finalize-and-review-results">
+<h3><span class="section-number">3.4.2.4. </span>Finalize and Review Results<a class="headerlink" href="#finalize-and-review-results" title="Permalink to this heading">#</a></h3>
+<p>The <em>ResTemp</em> model object accumulates and stores the simulated data internally as the simulation progresses.
+Upon completion, we can access that stored data for various purposes.
+The <code class="docutils literal notranslate"><span class="pre">finalize</span></code> function performs some intermedate data organization so that the internal lists and dictionaries are in a more user-friendly Pandas dataframe (with a timeseries index) - run this line (<code class="docutils literal notranslate"><span class="pre">shasta.finalize()</span></code> ) now.</p>
+<p>With the results <em>finalized</em>, you can access two important outputs of interest - simulated release temperatures and vertical temperature profiles - as members of the <code class="docutils literal notranslate"><span class="pre">shasta.Simulation_Results</span></code> object, as shown below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">simReleases</span> <span class="o">=</span> <span class="n">shasta</span><span class="o">.</span><span class="n">Simulation_Results</span><span class="p">[</span><span class="s1">&#39;ReleaseDF&#39;</span><span class="p">]</span>
+<span class="n">simProf</span> <span class="o">=</span> <span class="n">shasta</span><span class="o">.</span><span class="n">Simulation_Results</span><span class="p">[</span><span class="s1">&#39;ProfilesDF&#39;</span><span class="p">]</span>
+
+</pre></div>
+</div>
+<p>The first line assigns the dataframe containing columns for simulated release temperatures and volumes for each time step (index, by row) to the variable <code class="docutils literal notranslate"><span class="pre">simReleases</span></code>.
+This dataframe also contains information related to the temperature target, but we did not use that in this simulation so it can be ignored for now.</p>
+<p>The second line assigns the dataframe containing the simulated profile data to the variable <code class="docutils literal notranslate"><span class="pre">simProf</span></code>.
+The simulated profile dataframe again uses a datetime index for rows (one for every time step) but each column represents a <em>ResTemp</em> model layer.
+The specific column names correspond to the midpoint elevation of each model layer.
+Some values will be <code class="docutils literal notranslate"><span class="pre">nan</span></code> in time steps where layers are not filled.</p>
+<p>If you would like to analyze this data outside of Python, or save it for later in a text format, you can export these dataframe variables to CSV with a Pandas <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_csv.html">.to_csv</a> command.</p>
+<p>We can also use plotting functions available through the <code class="docutils literal notranslate"><span class="pre">make_plots</span></code> module we loaded to visualize the release and profile data.
+The final two functions in the example Python script (shown in the snipped below) show how this can be done.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># the `make_plots` module has some convenient plotting options</span>
+<span class="n">mkp</span><span class="o">.</span><span class="n">plotReleasesCompare</span><span class="p">(</span><span class="n">shasta</span><span class="p">,</span> <span class="n">select_years</span><span class="o">=</span><span class="p">[</span><span class="mi">2014</span><span class="p">,</span> <span class="mi">2015</span><span class="p">],</span> 
+                        <span class="n">viewSave</span><span class="o">=</span><span class="s1">&#39;save&#39;</span><span class="p">,</span> 
+                        <span class="n">obs_label</span> <span class="o">=</span> <span class="s1">&#39;Obs Tailwater&#39;</span><span class="p">,</span>
+                        <span class="n">other_temp</span> <span class="o">=</span> <span class="s1">&#39;temperature_other&#39;</span><span class="p">,</span>
+                        <span class="n">other_label</span> <span class="o">=</span> <span class="s1">&#39;TCD Wt Avg&#39;</span><span class="p">,</span>
+                        <span class="n">on_wy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> 
+
+<span class="n">mkp</span><span class="o">.</span><span class="n">plotProfilesCompare2</span><span class="p">(</span><span class="n">shasta</span><span class="p">,</span> <span class="n">simProf</span><span class="p">,</span> <span class="n">viewSave</span><span class="o">=</span><span class="s1">&#39;save&#39;</span><span class="p">,</span> <span class="n">on_wy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>The first function ()<code class="docutils literal notranslate"><span class="pre">mkp.plotReleasesCompare</span></code>) will create figures comparing observed and simulated release water temperatures for each year of simulation and save them to a file in an <code class="docutils literal notranslate"><span class="pre">outputs</span></code> in your model run directory.
+Don’t worry if you don’t have an <code class="docutils literal notranslate"><span class="pre">outputs</span></code> folder - it will create one.</p>
+<p>There are a number of options shown for this particular plotting function.
+The key inputs are the <code class="docutils literal notranslate"><span class="pre">shasta</span></code> model object (so the plotting function can access the data), the <code class="docutils literal notranslate"><span class="pre">select_years</span> <span class="pre">option</span></code> (if you only wanted to plot a specific year you could list that; alternatively setting the argument to ‘all’ would create plots for every year in the simulation period).
+Finally, the <code class="docutils literal notranslate"><span class="pre">on_wy</span></code> argument allows the user to plot from Oct 1 - Sep 30 as an alternative to calendar years if desired.
+It is set to <em>False</em> here as our simulations make more sense viewed on a calendar year basis.</p>
+<p>The plotting function automatically includes the simulated release temperature and any available observed release temperature data provided in the <code class="docutils literal notranslate"><span class="pre">Observations</span></code> section of the yaml input specification file.
+The other options add more lines and labels to the plots when they may be useful.
+The <code class="docutils literal notranslate"><span class="pre">other_temp</span></code> option allows you to specify a second temperature time series to overlay on the plot.
+In this case we use the <code class="docutils literal notranslate"><span class="pre">temperature_other</span></code> dataset from our set of observational time series (check the <code class="docutils literal notranslate"><span class="pre">Observations</span></code>&gt; <code class="docutils literal notranslate"><span class="pre">Outflow</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Header</span></code> to see that this is the weighted average TCD penstock outflow temperatures as reported by USBR).
+Adding this to the plot allows us to compare our simulated results in the context of uncertainty introduced by two different observed datasets.
+The <code class="docutils literal notranslate"><span class="pre">obs_label</span></code> and <code class="docutils literal notranslate"><span class="pre">other_label</span></code> entries allow you to set how the legend items will appear for the main observation and additional time series, respectively.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">mkp.plotProfilesCompare2</span></code> function plots a comparison of simulated and observed in-reservoir vertical temperature profiles.
+Most of the arguments are similar - providing the <code class="docutils literal notranslate"><span class="pre">shasta</span></code> model object, setting <code class="docutils literal notranslate"><span class="pre">on_wy</span></code> for selecting a water-year vs calendar year grouping of results, <code class="docutils literal notranslate"><span class="pre">view_save</span> <span class="pre">=</span> <span class="pre">save</span></code> for saving the plots to the <code class="docutils literal notranslate"><span class="pre">outputs</span></code> folder.
+The one difference is that the second argument needs to be the dataframe of the profile dataset (<code class="docutils literal notranslate"><span class="pre">simProf</span></code>) that we can access after running the <code class="docutils literal notranslate"><span class="pre">finalize</span></code> function.
+For each year of simulation, the profile plotting function will create a multi-plot figure where each small subplot is a comparison of the simulated vertical temperature profile to observed data on each date a profile was recorded.
+The figures also include shaded rectangles to indicate which gate is open, a dashed line for open river outlets, and an indicator of the simulated water surface.</p>
+<p>Run each of the plotting functions. The console should show the progress for creating each of the plot types, by year.
+Upon completion you should see an <code class="docutils literal notranslate"><span class="pre">outputs</span></code> folder containing a <code class="docutils literal notranslate"><span class="pre">figs</span></code> folder (both created if they didn’t exist) within your model run directory.
+Within the <code class="docutils literal notranslate"><span class="pre">figs</span></code> folder there should be four new plot files.
+They should look like the ones shown below:</p>
+<figure class="align-default" id="fig-simrel2014-v1">
+<img alt="../_images/ShastaRes_Example_Outflow_2014.png" src="../_images/ShastaRes_Example_Outflow_2014.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.3 </span><span class="caption-text">Comparison of simulated and observed daily Shasta release volume (a), release temperature (b), and prescribed TCD gate operations (c) for the 2014 calendar year. In panel (c), a darker color indicates more gates open, a lighter gray indicates fewer gates open, and white indicates no gates open on the level indicated on the y-axis at left.</span><a class="headerlink" href="#fig-simrel2014-v1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="fig-simrel2015-v1">
+<img alt="../_images/ShastaRes_Example_Outflow_2015.png" src="../_images/ShastaRes_Example_Outflow_2015.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.4 </span><span class="caption-text">Comparison of simulated and observed daily Shasta release volume (a), release temperature (b), and prescribed TCD gate operations (c) for the 2015 calendar year.
+In panel (c), a darker color indicates more gates open, a lighter gray indicates fewer gates open, and white indicates no gates open on the level indicated on the y-axis at left.</span><a class="headerlink" href="#fig-simrel2015-v1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="fig-simprof2014-v1">
+<img alt="../_images/ShastaRes_Example_Profiles_2014.png" src="../_images/ShastaRes_Example_Profiles_2014.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.5 </span><span class="caption-text">Comparison of simulated and observed Shasta vertical water temperature profiles for calendar year 2014. Subplots are shown for each available observed vertical temperature profile. Black lines represent observed data, orange lines are simulated. Purple shaded rectangles indicate the open gates on the date of the profile. The thick gray line, where present, indicates an active river outlet.</span><a class="headerlink" href="#fig-simprof2014-v1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="fig-simprof2015-v1">
+<img alt="../_images/ShastaRes_Example_Profiles_2015.png" src="../_images/ShastaRes_Example_Profiles_2015.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3.6 </span><span class="caption-text">Comparison of simulated and observed Shasta vertical water temperature profiles for calendar year 2015. Subplots are shown for each available observed vertical temperature profile. Black lines represent observed data, orange lines are simulated. Purple shaded rectangles indicate the open gates on the date of the profile. The thick gray line, where present, indicates an active river outlet.</span><a class="headerlink" href="#fig-simprof2015-v1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The release comparison plots show that the <em>ResTemp</em> model under this configuration does a reasonably good job of capturing the seasonal and week-to-week variability of release temperatures during these two drought years.
+Of note is that the 2015 simulation does not seem to match mid-summer temperatures quite as well as in 2014.
+Lining the onset of mismatch up with the observed TCD gate operations in the lower panel plot suggest that this may have something to do with the alternating opening and closing of the middle and lower gates.</p>
+<p>The profile comparison plots show good agreement between simulated and observed reservoir water temperatures for much of the year, replicating the stratification process in late spring into summer and the deepening of the epilimnion into the summer and fall.
+There is a notable divergence of the simulated profile at depths below the side gate in the fall of 2014, but this is less pronounced in 2015.
+This is potentially an area for further improvement or refinement in the model.</p>
+</section>
+</section>
+<section id="next-steps">
+<h2><span class="section-number">3.4.3. </span>Next steps<a class="headerlink" href="#next-steps" title="Permalink to this heading">#</a></h2>
+<p>You have now (hopefully) successfully run a Shasta <em>ResTemp</em> model and reviewed the results for two years.
+A suggested next step would be to modify the YAML specification file for a longer simulation period - the input datasets go from January 1, 2000 through September 30, 2022.
+Feel free to run the entire simulation period, make plots, and explore the results datasets.</p>
+<p>The next tutorial sections will cover a modified version of this Shasta standalone scenario where we optimize the TCD blending, running the Keswick model in standalone mode, and then connecting the Shasta, Keswick, and simple river model together in coupled mode.</p>
 </section>
 </section>
 
@@ -641,8 +782,10 @@ We’ve assigned the model to the variable name <code class="docutils literal no
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#package-imports">3.4.2.1. Package imports</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initialization">3.4.2.2. Initialization</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-the-model">3.4.2.3. Run the model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finalize-and-review-results">3.4.2.4. Finalize and Review Results</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">3.4.3. Next steps</a></li>
 </ul>
   </nav></div>
 

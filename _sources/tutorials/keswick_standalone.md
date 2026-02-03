@@ -12,6 +12,8 @@ kernelspec:
 
 # Tutorial: Simulating Keswick Reservoir - an example fully-mixed tailbay reservoir type
 
+***Note - this tutorial is not fully populated yet - look for updates soon!***
+
 The three main component models in the R3TAM framework represent different conceptualizations of how water temperature changes through managed resevoir-river systems.
 Tailbay or re-regulating reservoirs tend to be smaller volume impoundments that sit below a larger reservoir and serve the purpose of smoothing out variations in releases.
 They may also serve to collect and manage inflows from multiple sources, either natural or managed. 
@@ -23,21 +25,21 @@ Keswick Reservoir, downstream of Shasta Reservoir on the Sacramento River in nor
 
 ## Keswick Reservoir Specifications
 
-asdfas. 
+*Coming soon!*
 
 
 ## Model Inputs
 
-asdf
+*Coming soon!*
 
 
 ### Meteorology
 
-asdf
+*Coming soon!*
 
 ### Parameters
 
-asdf
+*Coming soon!*
 
 
 

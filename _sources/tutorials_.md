@@ -21,8 +21,9 @@ For now, the tutorials available include:
 1. [Getting started](./tutorials/getting_started.md) - A guide to setting up an appropriate Python environment and installing the R3TAM package
 
 2. *Shasta Reservoir Simulation* - An explanation of the inputs required for a ResTemp model of Shasta Reservoir and the steps needed to perform a standalone simulation. This is a two-part tutorial:
-  1. [Part 1: Shasta model inputs](./tutorials/shasta_standalone.md)
-  2. [Part 2: Running the Shasta model](./tutorials/running_shasta_standalone.md)
+
+  - [Part 1: Shasta model inputs](./tutorials/shasta_standalone.md)
+  - [Part 2: Running the Shasta model](./tutorials/running_shasta_standalone.md)
 
 3. [Keswick reservoir simulation](./tutorials/keswick_standalone.md) - An explanation of the inputs required for a LongTemp model as applied to Keswick Reservoir and the steps needed to perform a standalone simulation.
 

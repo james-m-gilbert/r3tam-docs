@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>3.4. Shasta Reservoir: Standalone Simulation - Part Two &#8212; Rapid Reservoir-River Temperature Assessment Model (R3TAM)</title>
+    <title>Shasta Reservoir: Standalone Simulation - Part Two &#8212; Rapid Reservoir-River Temperature Assessment Model (R3TAM)</title>
   
   
   
@@ -65,8 +65,6 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'tutorials/shasta_standalone_runningmodel';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="3.5. Tutorial: Simulating Keswick Reservoir - an example fully-mixed tailbay reservoir type" href="keswick_standalone.html" />
-    <link rel="prev" title="3.3. Shasta Reservoir: Standalone Simulation - Part One" href="shasta_standalone.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -168,17 +166,17 @@ const thebe_selector_output = ".output, .cell_output"
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../discussion.html">1. Discussion: Motivation and Concepts</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../reference_.html">2. Reference: Description of model components</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../reference/vertically_stratified_reservoir/restemp.html">2.1. ResTemp: A Simplified Model of Vertically-Stratifying Reservoirs</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="../tutorials_.html">3. Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials_.html">3. Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="getting_started.html">3.1. Getting Started with the Rapid Reservoir-River Temperature Assessment Modeling (R3TAM) Framework</a></li>
 
 <li class="toctree-l2"><a class="reference internal" href="shasta_standalone.html">3.3. Shasta Reservoir: Standalone Simulation - Part One</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.4. Shasta Reservoir: Standalone Simulation - Part Two</a></li>
+<li class="toctree-l2"><a class="reference internal" href="running_shasta_standalone.html">3.4. Shasta Reservoir: Standalone Simulation - Part Two</a></li>
 <li class="toctree-l2"><a class="reference internal" href="keswick_standalone.html">3.5. Tutorial: Simulating Keswick Reservoir - an example fully-mixed tailbay reservoir type</a></li>
 </ul>
 </li>
@@ -377,11 +375,11 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-a-simulation">3.4.1. Setting up a simulation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-restemp-simulation-for-shasta-reservoir">3.4.2. Running a <em>ResTemp</em> Simulation for Shasta Reservoir</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#package-imports">3.4.2.1. Package imports</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initialization">3.4.2.2. Initialization</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-the-model">3.4.2.3. Run the model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-a-simulation">Setting up a simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-restemp-simulation-for-shasta-reservoir">Running a <em>ResTemp</em> Simulation for Shasta Reservoir</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#package-imports">Package imports</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initialization">Initialization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-the-model">Run the model</a></li>
 </ul>
 </li>
 </ul>
@@ -396,11 +394,11 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="shasta-reservoir-standalone-simulation-part-two">
-<h1><span class="section-number">3.4. </span>Shasta Reservoir: Standalone Simulation - Part Two<a class="headerlink" href="#shasta-reservoir-standalone-simulation-part-two" title="Permalink to this heading">#</a></h1>
+<h1>Shasta Reservoir: Standalone Simulation - Part Two<a class="headerlink" href="#shasta-reservoir-standalone-simulation-part-two" title="Permalink to this heading">#</a></h1>
 <p>If you finished the <a class="reference internal" href="shasta_standalone.html"><span class="doc std std-doc">first tutorial on the Shasta ResTemp model</span></a>, you now have some familiarity with the types of information required as input and some of the options available for running.
 In this part of the tutorial we’ll go through the simpler process of using that information and options to actually run some simulations.</p>
 <section id="setting-up-a-simulation">
-<h2><span class="section-number">3.4.1. </span>Setting up a simulation<a class="headerlink" href="#setting-up-a-simulation" title="Permalink to this heading">#</a></h2>
+<h2>Setting up a simulation<a class="headerlink" href="#setting-up-a-simulation" title="Permalink to this heading">#</a></h2>
 <p>The yaml specification file we covered in the first part of this tutorial contains all the input information, but to make a simulation we need to connect that information to the <em><strong>R3TAM</strong></em> code that does the calculations and advances through our prescribed simulation period.
 We do this through a relatively Python script. In fact, the rest of this tutorial will be describing the contents of just such a Python file that can be used to run a Shasta model.</p>
 <p>To make things easier, I’ve provided the files needed to run the example simulations in a zipped folder here.
@@ -413,7 +411,7 @@ Similarly the <code class="docutils literal notranslate"><span class="pre">obs</
 For each part you should be able to run the relevant code in your Python interpreter/IDE - remember to switch to the new virtual environment to which you installed the <em><strong>R3TAM</strong></em> package if you haven’t already done so.</p>
 </section>
 <section id="running-a-restemp-simulation-for-shasta-reservoir">
-<h2><span class="section-number">3.4.2. </span>Running a <em>ResTemp</em> Simulation for Shasta Reservoir<a class="headerlink" href="#running-a-restemp-simulation-for-shasta-reservoir" title="Permalink to this heading">#</a></h2>
+<h2>Running a <em>ResTemp</em> Simulation for Shasta Reservoir<a class="headerlink" href="#running-a-restemp-simulation-for-shasta-reservoir" title="Permalink to this heading">#</a></h2>
 <p>Python scripts for running <em>ResTemp</em> or <em><strong>R3TAM</strong></em> models can become rather complicated (e.g. for coupled multi-model simulations or ensemble forecasting), but for a basic standalone simulation they are straightforward.
 The scripts generally include four important components:</p>
 <ol class="arabic simple">
@@ -424,7 +422,7 @@ The scripts generally include four important components:</p>
 </ol>
 <p>The following sections review how the contents of <code class="docutils literal notranslate"><span class="pre">shasta_stanadlone_example01.py</span></code> address each of these.</p>
 <section id="package-imports">
-<h3><span class="section-number">3.4.2.1. </span>Package imports<a class="headerlink" href="#package-imports" title="Permalink to this heading">#</a></h3>
+<h3>Package imports<a class="headerlink" href="#package-imports" title="Permalink to this heading">#</a></h3>
 <p>At the top of the Python file <code class="docutils literal notranslate"><span class="pre">shasta_stanadlone_example01.py</span></code> you’ll see some notes describing the purpose of this script and a number of import statements.
 The first set of imports - for <code class="docutils literal notranslate"><span class="pre">pandas</span></code> and <code class="docutils literal notranslate"><span class="pre">numpy</span></code>, shown in the snipped below - are not strictly necessary for running the model, but they are commonly used and can be helpful if you want to explore datasets produced by the simulation.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import some standard libraries</span>
@@ -460,7 +458,7 @@ In IDEs that recognize the <code class="docutils literal notranslate"><span clas
 Running the import section should produce no errors or console messages.</p>
 </section>
 <section id="initialization">
-<h3><span class="section-number">3.4.2.2. </span>Initialization<a class="headerlink" href="#initialization" title="Permalink to this heading">#</a></h3>
+<h3>Initialization<a class="headerlink" href="#initialization" title="Permalink to this heading">#</a></h3>
 <p>In the initialization step, all of the information in the YAML specification file is read in and used to set up the model object and the parameters of the simulation.
 The key thing we need is the location of the specification file.
 We set this path to the variable <code class="docutils literal notranslate"><span class="pre">config_fp</span></code> as shown in the example on line 37.
@@ -568,7 +566,7 @@ Depending on the initialization volume, some layers will show <code class="docut
 We’ve assigned the model to the variable name <code class="docutils literal notranslate"><span class="pre">shasta</span></code>, so now we can access the reservoir functions in combination with the Shasta-specific data through this object.</p>
 </section>
 <section id="run-the-model">
-<h3><span class="section-number">3.4.2.3. </span>Run the model<a class="headerlink" href="#run-the-model" title="Permalink to this heading">#</a></h3>
+<h3>Run the model<a class="headerlink" href="#run-the-model" title="Permalink to this heading">#</a></h3>
 </section>
 </section>
 </section>
@@ -603,24 +601,6 @@ We’ve assigned the model to the variable name <code class="docutils literal no
                 <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="shasta_standalone.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">3.3. </span>Shasta Reservoir: Standalone Simulation - Part One</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="keswick_standalone.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">3.5. </span>Tutorial: Simulating Keswick Reservoir - an example fully-mixed tailbay reservoir type</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
@@ -636,11 +616,11 @@ We’ve assigned the model to the variable name <code class="docutils literal no
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-a-simulation">3.4.1. Setting up a simulation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-restemp-simulation-for-shasta-reservoir">3.4.2. Running a <em>ResTemp</em> Simulation for Shasta Reservoir</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#package-imports">3.4.2.1. Package imports</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initialization">3.4.2.2. Initialization</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-the-model">3.4.2.3. Run the model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-a-simulation">Setting up a simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-restemp-simulation-for-shasta-reservoir">Running a <em>ResTemp</em> Simulation for Shasta Reservoir</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#package-imports">Package imports</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#initialization">Initialization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#run-the-model">Run the model</a></li>
 </ul>
 </li>
 </ul>

@@ -48,7 +48,7 @@ We provide a description of these inputs in the sections below on our way toward
 ## Model Inputs
 
 The following sections refer to files that support a Shasta Reservoir simulation using the ResTemp model.
-You can find these files in the `shasta` folder within the examples provided [on GitHub](https://github.com/james-m-gilbert/r3tam/tree/test-release/examples) or in a zipped folder <<provide-link>>.
+You can find these files in the `shasta` folder within the examples provided [on GitHub](https://github.com/james-m-gilbert/r3tam/tree/test-release/examples) or in a zipped folder [here](files/examples.zip).
 
 ### Run Specification File
 

@@ -22,7 +22,7 @@ In this part of the tutorial we'll go through the simpler process of using that 
 The yaml specification file we covered in the first part of this tutorial contains all the input information, but to make a simulation we need to connect that information to the ***R3TAM*** code that does the calculations and advances through our prescribed simulation period.
 We do this through a relatively Python script. In fact, the rest of this tutorial will be describing the contents of just such a Python file that can be used to run a Shasta model.
 
-To make things easier, I've provided the files needed to run the example simulations in a zipped folder here. 
+To make things easier, I've provided the files needed to run the example simulations in a zipped folder [here](files/examples.zip). 
 If you haven't already done so, download these files and place them in a directory where you'll want to do your test runs.
 Once you've done that, navigate to the *shasta* folder (`examples/shasta`) and note the arrangement of files and folders.
 You should see a folder named `inputs`, one named `obs`, the YAML run specification file `shasta_standalone.yaml`, and several Python (*\*.py*) files.
@@ -39,7 +39,7 @@ Python scripts for running *ResTemp* or ***R3TAM*** models can become rather com
 The scripts generally include four important components:
   1. Package/module imports
   2. Initialization
-  3. Advancing through the simulation
+  3. Run the model - advancing through the simulation
   4. Finalizing and reviewing results
 
 The following sections review how the contents of `shasta_stanadlone_example01.py` address each of these.
@@ -202,5 +202,172 @@ assigning profile assuming 'tidy' format
 If you got something similar to the console listing shown above, your Shasta *ResTemp* model is initialized and ready to run.
 We've assigned the model to the variable name `shasta`, so now we can access the reservoir functions in combination with the Shasta-specific data through this object.
 
+Before moving on the actual model simulation, it may be helpful to make clear what we are intending to simulate in this instance:
+  - First, we are simulating a historical period, calendar years 2014-2015
+    - You can confirm this in the YAML specification file under the `Timing` section.
+  - We are using the observed historical meteorology, hydrology, and reservoir operations as input, so we should expect the simulated response to follow what happened in real life
+  - In this particular version, we set the `BlendingMethod` (in the `Parameters` section) to 0, meaning that the hydraulic approximations are used to assign flow through gates when multiple levels are open. This means we may see some jumps or discrpeancies in release temperatures, especially when there is a strong temperature gradient near the withdrawal envelope.
+  - This is the simplest configuration for running the model, so we should expect it to run relatively quickly, perhaps a few seconds or less per year.
+
 ### Run the model
+
+With the model initialized, the next step is to run the simulation. 
+Two key functions for doing this are:
+
+  1. `advance_restemp` - Performs calculations for inflows, mixing, and surface heat exchange
+  2. `advance_swd` - Performs the calculations for selective withdrawal ('swd') and outflow
+
+A fully simulated time step executes both of these functions, in the order listed. 
+Note that the `advance_swd` function has a named argument "*final*".
+When set to *True*, upon running this function, the specified outflow and gate configuration will remove water from the reservoir and the impact of that will be propagated to the reservoir profile.
+If set to *False*, however, the effect of a release volume and gate configuration will be calculated but not propagated to the reservoir state.
+This functionality is necessary when running the model in a dynamic gate operation mode as it allows the user to test out different release options or gate configurations under the same in-reservoir conditions.
+
+The initialization process provides our `shasta` model object with the information about start date and simulation period, so running the simulation is simply a matter of looping through the dates that make up that simulation period and executing the two key functions (`advance_restemp` and `advance_swd` in sequence) for each iteration. 
+The code excerpt for the **Run the model** section below shows how this looping can be done:
+
+``` python
+#%% Run the model
+
+btime = time.perf_counter() 
+for d in shasta.SimDates:
+    print(d)
+    shasta.advance_restemp()
+
+    shasta.advance_swd(final=True)
+
+etime = time.perf_counter() 
+print(f"took {etime-btime} seconds")
+
+```
+
+Note the `btime`, `etime` and final `print` statement are there simply to keep track of how long the simulation takes and are not necessary for the simulation to work. 
+The `print(d)` statement is also not strictly necessary but is helpful for visualizing the progress of the simulation.
+Also note the `final=True` argument to the `shasta.advance_swd` function. 
+We set this to `True` here because we are setting the gate operations directly and not performing any dynamic gate selection (confirm this by checking that `Hindcast = True` and `SimGateOps = False` under the `Simulation Mode` section).
+
+You can execute this section of code in your Python interpreter to run the simulation for the prescribed period (Jan 1, 2014 - Dec 31, 2015). 
+You should see the dates of the simulation appear on your console window during the simulation.
+If all goes smoothly you'll see the simulation reach 2015-12-31 00:00:00 followed by a statement of the time required for the whole process. 
+On my computer it took 3.98 seconds, or about 2 seconds/year.
+
+The simulation is now complete, so the next step is to review the results and move on to whatever additional analysis is desired.
+
+### Finalize and Review Results
+
+The *ResTemp* model object accumulates and stores the simulated data internally as the simulation progresses.
+Upon completion, we can access that stored data for various purposes. 
+The `finalize` function performs some intermedate data organization so that the internal lists and dictionaries are in a more user-friendly Pandas dataframe (with a timeseries index) - run this line (`shasta.finalize()` ) now.
+
+With the results *finalized*, you can access two important outputs of interest - simulated release temperatures and vertical temperature profiles - as members of the `shasta.Simulation_Results` object, as shown below:
+
+``` python
+simReleases = shasta.Simulation_Results['ReleaseDF']
+simProf = shasta.Simulation_Results['ProfilesDF']
+
+```
+
+The first line assigns the dataframe containing columns for simulated release temperatures and volumes for each time step (index, by row) to the variable `simReleases`.
+This dataframe also contains information related to the temperature target, but we did not use that in this simulation so it can be ignored for now.
+
+The second line assigns the dataframe containing the simulated profile data to the variable `simProf`. 
+The simulated profile dataframe again uses a datetime index for rows (one for every time step) but each column represents a *ResTemp* model layer. 
+The specific column names correspond to the midpoint elevation of each model layer.
+Some values will be `nan` in time steps where layers are not filled.
+
+If you would like to analyze this data outside of Python, or save it for later in a text format, you can export these dataframe variables to CSV with a Pandas [.to_csv](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_csv.html) command.
+
+We can also use plotting functions available through the `make_plots` module we loaded to visualize the release and profile data.
+The final two functions in the example Python script (shown in the snipped below) show how this can be done.
+
+``` python
+# the `make_plots` module has some convenient plotting options
+mkp.plotReleasesCompare(shasta, select_years=[2014, 2015], 
+                        viewSave='save', 
+                        obs_label = 'Obs Tailwater',
+                        other_temp = 'temperature_other',
+                        other_label = 'TCD Wt Avg',
+                        on_wy=False) 
+
+mkp.plotProfilesCompare2(shasta, simProf, viewSave='save', on_wy=False)
+
+```
+%                         target_ts = 'Sim_Temp_Target_degF',
+%                        target_tol = 'Sim_Target_Tolerance_degF',
+
+The first function ()`mkp.plotReleasesCompare`) will create figures comparing observed and simulated release water temperatures for each year of simulation and save them to a file in an `outputs` in your model run directory. 
+Don't worry if you don't have an `outputs` folder - it will create one.
+
+There are a number of options shown for this particular plotting function. 
+The key inputs are the `shasta` model object (so the plotting function can access the data), the `select_years option` (if you only wanted to plot a specific year you could list that; alternatively setting the argument to 'all' would create plots for every year in the simulation period).
+Finally, the `on_wy` argument allows the user to plot from Oct 1 - Sep 30 as an alternative to calendar years if desired. 
+It is set to *False* here as our simulations make more sense viewed on a calendar year basis.
+
+The plotting function automatically includes the simulated release temperature and any available observed release temperature data provided in the `Observations` section of the yaml input specification file.
+The other options add more lines and labels to the plots when they may be useful.
+The `other_temp` option allows you to specify a second temperature time series to overlay on the plot.
+In this case we use the `temperature_other` dataset from our set of observational time series (check the `Observations`> `Outflow` > `Header` to see that this is the weighted average TCD penstock outflow temperatures as reported by USBR). 
+Adding this to the plot allows us to compare our simulated results in the context of uncertainty introduced by two different observed datasets.
+The `obs_label` and `other_label` entries allow you to set how the legend items will appear for the main observation and additional time series, respectively.
+
+The `mkp.plotProfilesCompare2` function plots a comparison of simulated and observed in-reservoir vertical temperature profiles. 
+Most of the arguments are similar - providing the `shasta` model object, setting `on_wy` for selecting a water-year vs calendar year grouping of results, `view_save = save` for saving the plots to the `outputs` folder. 
+The one difference is that the second argument needs to be the dataframe of the profile dataset (`simProf`) that we can access after running the `finalize` function. 
+For each year of simulation, the profile plotting function will create a multi-plot figure where each small subplot is a comparison of the simulated vertical temperature profile to observed data on each date a profile was recorded. 
+The figures also include shaded rectangles to indicate which gate is open, a dashed line for open river outlets, and an indicator of the simulated water surface.
+
+Run each of the plotting functions. The console should show the progress for creating each of the plot types, by year.
+Upon completion you should see an `outputs` folder containing a `figs` folder (both created if they didn't exist) within your model run directory.
+Within the `figs` folder there should be four new plot files.
+They should look like the ones shown below:
+
+ ```{figure} ./figs/ShastaRes_Example_Outflow_2014.png
+:name: fig-simrel2014-v1
+
+Comparison of simulated and observed daily Shasta release volume (a), release temperature (b), and prescribed TCD gate operations (c) for the 2014 calendar year. In panel (c), a darker color indicates more gates open, a lighter gray indicates fewer gates open, and white indicates no gates open on the level indicated on the y-axis at left.
+
+``` 
+
+ ```{figure} ./figs/ShastaRes_Example_Outflow_2015.png
+:name: fig-simrel2015-v1
+
+Comparison of simulated and observed daily Shasta release volume (a), release temperature (b), and prescribed TCD gate operations (c) for the 2015 calendar year.
+In panel (c), a darker color indicates more gates open, a lighter gray indicates fewer gates open, and white indicates no gates open on the level indicated on the y-axis at left.
+``` 
+
+ ```{figure} ./figs/ShastaRes_Example_Profiles_2014.png
+:name: fig-simprof2014-v1
+
+Comparison of simulated and observed Shasta vertical water temperature profiles for calendar year 2014. Subplots are shown for each available observed vertical temperature profile. Black lines represent observed data, orange lines are simulated. Purple shaded rectangles indicate the open gates on the date of the profile. The thick gray line, where present, indicates an active river outlet.
+ 
+``` 
+
+ ```{figure} ./figs/ShastaRes_Example_Profiles_2015.png
+:name: fig-simprof2015-v1
+
+Comparison of simulated and observed Shasta vertical water temperature profiles for calendar year 2015. Subplots are shown for each available observed vertical temperature profile. Black lines represent observed data, orange lines are simulated. Purple shaded rectangles indicate the open gates on the date of the profile. The thick gray line, where present, indicates an active river outlet.
+ 
+``` 
+
+The release comparison plots show that the *ResTemp* model under this configuration does a reasonably good job of capturing the seasonal and week-to-week variability of release temperatures during these two drought years.
+Of note is that the 2015 simulation does not seem to match mid-summer temperatures quite as well as in 2014. 
+Lining the onset of mismatch up with the observed TCD gate operations in the lower panel plot suggest that this may have something to do with the alternating opening and closing of the middle and lower gates. 
+
+The profile comparison plots show good agreement between simulated and observed reservoir water temperatures for much of the year, replicating the stratification process in late spring into summer and the deepening of the epilimnion into the summer and fall.
+There is a notable divergence of the simulated profile at depths below the side gate in the fall of 2014, but this is less pronounced in 2015. 
+This is potentially an area for further improvement or refinement in the model.
+
+
+%The `target_ts` option allows you to specify a target time series to be plotted alongside the observed and simulated data. 
+%We did not use a target temperature in our simulation (`Hindcast=True` and `SimGateOps=False`), so this functions only as a means to add another line to the chart. 
+%In this case, the specified target timeseries variable (`'Sim_Temp_Target_degF'`) is the average of teh 
+
+
+## Next steps
+
+You have now (hopefully) successfully run a Shasta *ResTemp* model and reviewed the results for two years.
+A suggested next step would be to modify the YAML specification file for a longer simulation period - the input datasets go from January 1, 2000 through September 30, 2022. 
+Feel free to run the entire simulation period, make plots, and explore the results datasets.
+
+The next tutorial sections will cover a modified version of this Shasta standalone scenario where we optimize the TCD blending, running the Keswick model in standalone mode, and then connecting the Shasta, Keswick, and simple river model together in coupled mode.
 
